@@ -1,0 +1,221 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>初玩Visual Studio Code | Rey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="guorui">
+  
+  
+    <meta name="description" content="微软在今年的Build大会上发布了一款新型的代码编辑器Visual Studio Code，它一出现就吸引了大多数开发者的关注，尤其是前端开发人员。
+
+Build and debug modern web and cloud applications. Code is free and available on your favorite platform - Linux, Mac OSX, an">
+  
+  <meta name="description" content="微软在今年的Build大会上发布了一款新型的代码编辑器Visual Studio Code，它一出现就吸引了大多数开发者的关注，尤其是前端开发人员。
+
+Build and debug modern web and cloud applications. Code is free and available on your favorite platform - Linux, Mac OSX, an">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初玩Visual Studio Code">
+<meta property="og:url" content="http://reygreen1.github.io/2015/04/30/about-vscode/index.html">
+<meta property="og:site_name" content="Rey's Blog">
+<meta property="og:description" content="微软在今年的Build大会上发布了一款新型的代码编辑器Visual Studio Code，它一出现就吸引了大多数开发者的关注，尤其是前端开发人员。
+
+Build and debug modern web and cloud applications. Code is free and available on your favorite platform - Linux, Mac OSX, an">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/vscode.png">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/vscode-layout.png">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/file-opertion.png">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/file-splite.png">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/code-suggest.png">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/require-mono.png">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/code-debug.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初玩Visual Studio Code">
+<meta name="twitter:description" content="微软在今年的Build大会上发布了一款新型的代码编辑器Visual Studio Code，它一出现就吸引了大多数开发者的关注，尤其是前端开发人员。
+
+Build and debug modern web and cloud applications. Code is free and available on your favorite platform - Linux, Mac OSX, an">
+  
+    <link rel="alternate" href="/atom.xml" title="Rey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Rey&#39;s Blog</a></h1>
+    <p><a href="/">&lt;!-- A site to show something about myself --&gt;</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/04/30/about-vscode/">
+  <time datetime="2015-04-30T08:52:15.000Z">
+    2015-04-30
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">初玩Visual Studio Code</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p><img src="http://7tt058.com1.z0.glb.clouddn.com/vscode.png" alt="Visual Studio Code"></p>
+<p>微软在今年的Build大会上发布了一款新型的代码编辑器Visual Studio Code，它一出现就吸引了大多数开发者的关注，尤其是前端开发人员。</p>
+<blockquote>
+<p>Build and debug modern web and cloud applications. Code is free and available on your favorite platform - Linux, Mac OSX, and Windows.</p>
+</blockquote>
+<p>如官网介绍，Code的特点是免费、跨平台，它专注于代码开发过程，提供调试工具，定位轻量级的代码编辑器，将竞争的矛头直接指向<a href="http://www.sublimetext.com/" target="_blank" rel="external">Sublime Text</a>、<a href="https://atom.io/" target="_blank" rel="external">Atom</a>。</p>
+<p>笔者今天使用了一天Code的预览版，下面来简单介绍下这款工具的一些优缺点。</p>
+<a id="more"></a>
+<h3 id="定位">定位</h3><p>首先必须明确说明，Code仅仅是一个轻量级的代码编辑器，跟我们平时使用的Sublime、Atom类似，绝不是完整的IDE（集成开发环境），区别于Visual Studio等。</p>
+<h3 id="界面">界面</h3><p>不得不说这真是一款颜值颇高的编辑器，启动后的给人一种非常舒服的感觉。</p>
+<p><img src="http://7tt058.com1.z0.glb.clouddn.com/vscode-layout.png" alt="Code界面"></p>
+<p>左侧除了有在Sublime中掺假的目录结构，还多了一个侧边栏的导航，功能包含了搜索、git和debug的功能。在不同的导航界面下，目录面板会有不同的功能设置。</p>
+<p>还有一个需要注意的是，最右侧只剩下了一个导航条来显示当前视图在整个文件中的位置，而Sublime中使用的是文件内容缩略图。在文件内容较多的时候，滚动条无法提供一种“即视感”，所以我还是比较偏爱Sublime的这种设置。</p>
+<h3 id="文件和文件夹操作">文件和文件夹操作</h3><p>首先，Code里打开一个项目就会新建一个视图窗口，而Sublime里可以同时在FOLDERS下同时打开多个项目，区别还是不小。不过貌似，这对专注单一项目的同学还好，要是对像我这种需要在不同项目里跳来跳去的人来说，还是Sublime的更加合适。</p>
+<p>当鼠标放在项目根目录上时，会出现四个操作按钮，如下图所示：</p>
+<p><img src="http://7tt058.com1.z0.glb.clouddn.com/file-opertion.png" alt=""></p>
+<p>可以新建文件、文件夹和执行目录折叠的操作等，同时，右键新建操作更加接近真实的创建场景，如果你使用过Sublime的相关新建操作，就会发现Code的方式还是更容易接受。</p>
+<p>另外，当前编辑窗口的右上角多了一个Split Editor的按钮，用来将当前窗口快速分割为左右两个，类似“分身”。</p>
+<p> <img src="http://7tt058.com1.z0.glb.clouddn.com/file-splite.png" alt="窗口分身"></p>
+<p>当然，Sublime也可以完成相同的功能，而且还可以上下分割，但是需要快捷键操作或者选择菜单，Code这里做了按钮，简单直接。</p>
+<p>另一个槽点，既然支持多行文件编辑，但是居然不对多行选择进行支持！在Sublime里很方便的一条命令，居然在Code里玩不起来了，好伤心。</p>
+<h3 id="智能提示">智能提示</h3><p>Sublime的智能提示是针对当前文件上下文的，试试Code的提示，简直要逆天了。</p>
+<p><img src="http://7tt058.com1.z0.glb.clouddn.com/code-suggest.png" alt="智能提示"></p>
+<p>HTML、JS、Angular的补全，个人感觉非常强大。如果要实现上图node相关的提示，则需要在文件开头添加：</p>
+<blockquote>
+<p>/// &lt;reference path=”typings/node/node.d.ts”</p>
+</blockquote>
+<h3 id="代码高亮">代码高亮</h3><p>目前Code的代码高亮功能完全不能跟Sublime相比，总是一种很单调的感觉。</p>
+<p>但是，这个问题解决起来应该不会很难，只要Code在后续版本中支持插件扩展，万能的开发者肯定马上就可以让Code的Theme（目前只有dark和light两种风格）丰富起来。</p>
+<h3 id="代码调试">代码调试</h3><p>debug的选项让人眼前一亮，最近又正好在写node模块，如果能在Code里debug代码真是非常方便。</p>
+<p>但是，要想使用调试功能，必须先安装<a href="http://www.mono-project.com/download/" target="_blank" rel="external">Mono</a>，不然连node的调试都进行不了。更悲催的是，VSCode的安装包有65M左右，但是Mono的安装文件居然要200多M，安装完后占据600多M空间。</p>
+<p><img src="http://7tt058.com1.z0.glb.clouddn.com/require-mono.png" alt="需要先安装Mono"></p>
+<p>完成安装后，配置好加载项的相关配置，调试界面还是非常让人惊艳的：</p>
+<p><img src="http://7tt058.com1.z0.glb.clouddn.com/code-debug.png" alt="Code调试node代码"></p>
+<h3 id="性能">性能</h3><p>据说在打开大容量文件的速度上要比Sublime快不少，但我没有实际测试过。官网也有特别宣传编辑器的性能，所以有兴趣的同学可以私下测试对比下。</p>
+<h3 id="插件支持">插件支持</h3><p>目前预览版不支持插件化，但我认为这只是一时状况而已，微软不可能会忽略Sublime的成功之道。相信在正式版中会有比较完美的支持。</p>
+<hr>
+<h3 id="总结">总结</h3><p>从上面的对比分析可以看出，Code本身有自己的亮点，但是目前并不完善（当然这只是预览版而已）。相信Code的开发者也一定注意到了上文提到的几个问题，期待在正式版中有所改进。但就目前的情况而言，Code无法撼动Sublime的地位，所以日常开发中，我还是会有选择的使用Code和Sublime。</p>
+<hr>
+<h3 id="参考">参考</h3><ol>
+<li><a href="https://code.visualstudio.com/" target="_blank" rel="external">Visual Studio Code官网</a></li>
+<li><a href="http://www.zhihu.com/question/29984607" target="_blank" rel="external">如何评价 Visual Studio Code？</a></li>
+<li><a href="https://code.visualstudio.com/Download" target="_blank" rel="external">Code相关下载</a></li>
+<li><a href="http://www.mono-project.com/download/" target="_blank" rel="external">Mono下载</a></li>
+</ol>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/工具/">工具</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Visual-Studio-Code/">Visual Studio Code</a>, <a class="tags-link" href="/tags/工具/">工具</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/04/30/about-vscode/" data-title="初玩Visual Studio Code" data-url="http://reygreen1.github.io/2015/04/30/about-vscode/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"curry2015"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+	<!-- 多说公共JS代码 end -->
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">guorui</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+  
+   |
+  Modified by <a href="/">guorui</a>
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'curry2015' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

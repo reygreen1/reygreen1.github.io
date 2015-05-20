@@ -1,0 +1,227 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>初识WebGL | Rey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="guorui">
+  
+  
+    <meta name="description" content="先来看看WebGL的官方介绍：
+WebGL - OpenGL ES 2.0 for the Web
+
+WebGL — Web上的OpenGL ES 2.0
+
+WebGL is a cross-platform, royalty-free web standard for a low-level 3D graphics API based on OpenGL ES 2.0, exposed thro">
+  
+  <meta name="description" content="先来看看WebGL的官方介绍：
+WebGL - OpenGL ES 2.0 for the Web
+
+WebGL — Web上的OpenGL ES 2.0
+
+WebGL is a cross-platform, royalty-free web standard for a low-level 3D graphics API based on OpenGL ES 2.0, exposed thro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识WebGL">
+<meta property="og:url" content="http://reygreen1.github.io/2015/05/20/about-webGl/index.html">
+<meta property="og:site_name" content="Rey's Blog">
+<meta property="og:description" content="先来看看WebGL的官方介绍：
+WebGL - OpenGL ES 2.0 for the Web
+
+WebGL — Web上的OpenGL ES 2.0
+
+WebGL is a cross-platform, royalty-free web standard for a low-level 3D graphics API based on OpenGL ES 2.0, exposed thro">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/webgl-html5.png">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/OpenGL-related-Ecosystem.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初识WebGL">
+<meta name="twitter:description" content="先来看看WebGL的官方介绍：
+WebGL - OpenGL ES 2.0 for the Web
+
+WebGL — Web上的OpenGL ES 2.0
+
+WebGL is a cross-platform, royalty-free web standard for a low-level 3D graphics API based on OpenGL ES 2.0, exposed thro">
+  
+    <link rel="alternate" href="/atom.xml" title="Rey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Rey&#39;s Blog</a></h1>
+    <p><a href="/">&lt;!-- A site to show something about myself --&gt;</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/05/20/about-webGl/">
+  <time datetime="2015-05-20T07:52:24.000Z">
+    2015-05-20
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">初识WebGL</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p><img src="http://7tt058.com1.z0.glb.clouddn.com/webgl-html5.png" alt="HTML5和WebGL"></p>
+<h3 id="先来看看WebGL的官方介绍：">先来看看WebGL的官方介绍：</h3><blockquote>
+<p>WebGL - OpenGL ES 2.0 for the Web</p>
+</blockquote>
+<p>WebGL — Web上的OpenGL ES 2.0</p>
+<blockquote>
+<p>WebGL is a cross-platform, royalty-free web standard for a low-level 3D graphics API based on OpenGL ES 2.0, exposed through the HTML5 Canvas element as Document Object Model interfaces. Developers familiar with OpenGL ES 2.0 will recognize WebGL as a Shader-based API using GLSL, with constructs that are semantically similar to those of the underlying OpenGL ES 2.0 API. It stays very close to the OpenGL ES 2.0 specification, with some concessions made for what developers expect out of memory-managed languages such as JavaScript.</p>
+</blockquote>
+<p>WebGL是一种跨平台并且可以自由使用的3D图形API，它基于OpenGL ES 2.0，并且通过HTML5 Canvas来将自己暴露为DOM接口。因为WebGL在语义上同OpenGL ES 2.0的基础接口非常类似，所以熟悉OpenGL ES 2.0的开发者会把WebGL当做使用GLSL（OpenGL Shading Language，OpenGL着色语言）的一套API。它同OpenGL ES 2.0的标准非常类似，只是在某些地方为顺应开发者需求做了妥协。</p>
+<blockquote>
+<p>WebGL brings plugin-free 3D to the web, implemented right into the browser. Major browser vendors Apple (Safari), Google (Chrome), Mozilla (Firefox), and Opera (Opera) are members of the WebGL Working Group.</p>
+</blockquote>
+<p>WebGL为web带来了无插件化的3D技术，这种实现非常适合浏览器。目前，主要的浏览器生产商Apple (Safari), Google (Chrome), Mozilla (Firefox), and Opera (Opera)都成为了WebGL工作组的成员。</p>
+<p>补充：2014年微软也加入了WebGL工作组(IE11已经支持WebGL)。</p>
+<a id="more"></a>
+<h2 id="WebGL是什么？">WebGL是什么？</h2><p>WebGL是一种3D绘图标准，它提供了一套JS版本的API接口，通过调用这些接口可以直接使用OpenGL ES 2.0的功能，从而实现强大的3D绘图效果。</p>
+<p>WebGL在HTML5中使用Canvas作为宿主，能够在渲染的过程中使用硬件加速，这让3D模型的展示更加流畅，在特定的业务场景中具有非常明显的优势。</p>
+<p>最后需要重点提醒的是，WebGL在浏览器中展示3D效果不需要额外安装任何插件。对于支持WebGL的浏览器来说，可以直接用JavaScript来实现3D效果。</p>
+<p>目前对WebGL提供支持的浏览器有<a href="https://developer.mozilla.org/en-US/docs/Firefox_4_for_developers" target="_blank" rel="external">Firefox 4</a>+ 、<a href="http://www.google.com/chrome/" target="_blank" rel="external">Google Chrome</a> 9+ 、<a href="http://www.opera.com/" target="_blank" rel="external">Opera</a> 12+和<a href="http://www.apple.com.cn/safari/" target="_blank" rel="external">Safari</a> 5.1+。</p>
+<h2 id="3D图形API">3D图形API</h2><p>我们平时了解较多的3D图形API主要有OpenGL、DirectX。</p>
+<p>OpenGL（Open Graphics Library，开放图形库）使用非常广泛，因为其跨平台性，在各种操作系统下都有很多应用场景，开发游戏、工业建模、嵌入式设备等。</p>
+<p>DirectX是微软创建的一系列为多媒体以及游戏开发服务的应用程序接口，主要应用场景是在windows系统下进行游戏开发，基本在这个领域下无任何对手。</p>
+<p>OpenGL ES可以看做是OpenGL的一个子集，专注于嵌入式设备。OpenGL ES 2.0是其中一个主要版本，它采用了可编程的渲染管线，渲染能力有了非常大的提高，它要求设备必须有相应的GPU硬件支持，不支持软件模拟实现。</p>
+<h2 id="WebGL、OpenGL与OpenGL_ES_2-0">WebGL、OpenGL与OpenGL ES 2.0</h2><p>WebGL、OpenGL和OpenGL ES 2.0的相互关系可以参考下图：</p>
+<p><img src="http://7tt058.com1.z0.glb.clouddn.com/OpenGL-related-Ecosystem.jpg" alt="OpenGL相关生态体系"></p>
+<p>从图中可以看出，OpenGL ES是OpenGL的子集，WebGL同时在OpenGL和OpenGL ES 2.0上基础上构建出了JavaScript API，依托于HTML5，在浏览器上实现了无插件依赖的3D技术。</p>
+<p>WebGL是JavaScript的API接口，对于web开发人员来说更加友好，使用起来更容易上手。</p>
+<p>OpenGL相对来说，门槛比较高，涉及的专业知识很多，如着色语言、投影变换、光照、纹理等，需要花费比较多的时间去学习整理。</p>
+<h2 id="OpenGL_ES_3-0">OpenGL ES 3.0</h2><p>Khronos Group在SIGGRAPH 2012专业图形大会上宣布了新一代移动3D图形标准规范“OpenGL ES 3.0”。</p>
+<p>WebGL是基于OpenGL ES 2.0的，到目前为止还没有考虑过3.0，虽然3.0提出了很多新的功能。</p>
+<p>Android对于OpenGL ES 3.0的相关说明：</p>
+<blockquote>
+<p>OpenGL ES 3.0 - This API specification is supported by Android 4.3 (API level 18) and higher.</p>
+</blockquote>
+<p>同时，它还声明，设备必须需要设备生产商来实现相关图形管线，也就是说如果设备生产商不实现相关支持，即使是4.3或者更高版本的系统也无法运行OpenGL ES 3.0的API。</p>
+<h2 id="参考">参考</h2><ol>
+<li><a href="http://cn.khronos.org/webgl" target="_blank" rel="external">WebGL - OpenGL ES 2.0 for the Web</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/WebGL" target="_blank" rel="external">WebGL</a></li>
+<li><a href="http://www.oschina.net/p/webgl" target="_blank" rel="external">Web的3D绘图标准 WebGL</a></li>
+<li><a href="http://news.mydrivers.com/1/236/236922.htm" target="_blank" rel="external">移动3D图形新起点：OpenGL ES 3.0规范发布</a></li>
+<li><a href="http://developer.android.com/guide/topics/graphics/opengl.html" target="_blank" rel="external">OpenGL ES</a></li>
+<li><a href="http://www.zhihu.com/question/24813635" target="_blank" rel="external">微软为何要在 2014 年加入 WebGL 小组？</a></li>
+<li><a href="http://www.zhihu.com/question/19993499" target="_blank" rel="external">WebGL 是否需要以 OpenGL 为学习基础？</a></li>
+</ol>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/WebGL/">WebGL</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/05/20/about-webGl/" data-title="初识WebGL" data-url="http://reygreen1.github.io/2015/05/20/about-webGl/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"curry2015"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+	<!-- 多说公共JS代码 end -->
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">guorui</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+  
+   |
+  Modified by <a href="/">guorui</a>
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="http://s7.qhimg.com/lib/jquery/1102.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'curry2015' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

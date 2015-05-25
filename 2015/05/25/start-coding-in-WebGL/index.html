@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>WebGL编程起步 | Rey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="guorui">
+  
+  
+    <meta name="description" content="上篇文章简单介绍了WebGL的一些相关概念、现状以及工作原理，没有涉及到具体编码，本文将使用WebGL的相关技术来实现一个简单的效果示例，从而让大家了解WebGL编程的基本流程和关键操作。最后，还介绍了一些WebGL的库和框架，恰当的使用这些第三方框架，可以大大提高我们的工作效率。">
+  
+  <meta name="description" content="上篇文章简单介绍了WebGL的一些相关概念、现状以及工作原理，没有涉及到具体编码，本文将使用WebGL的相关技术来实现一个简单的效果示例，从而让大家了解WebGL编程的基本流程和关键操作。最后，还介绍了一些WebGL的库和框架，恰当的使用这些第三方框架，可以大大提高我们的工作效率。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebGL编程起步">
+<meta property="og:url" content="http://reygreen1.github.io/2015/05/25/start-coding-in-WebGL/index.html">
+<meta property="og:site_name" content="Rey's Blog">
+<meta property="og:description" content="上篇文章简单介绍了WebGL的一些相关概念、现状以及工作原理，没有涉及到具体编码，本文将使用WebGL的相关技术来实现一个简单的效果示例，从而让大家了解WebGL编程的基本流程和关键操作。最后，还介绍了一些WebGL的库和框架，恰当的使用这些第三方框架，可以大大提高我们的工作效率。">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/webgl.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WebGL编程起步">
+<meta name="twitter:description" content="上篇文章简单介绍了WebGL的一些相关概念、现状以及工作原理，没有涉及到具体编码，本文将使用WebGL的相关技术来实现一个简单的效果示例，从而让大家了解WebGL编程的基本流程和关键操作。最后，还介绍了一些WebGL的库和框架，恰当的使用这些第三方框架，可以大大提高我们的工作效率。">
+  
+    <link rel="alternate" href="/atom.xml" title="Rey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Rey&#39;s Blog</a></h1>
+    <p><a href="/">&lt;!-- A site to show something about myself --&gt;</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/05/25/start-coding-in-WebGL/">
+  <time datetime="2015-05-25T03:05:16.000Z">
+    2015-05-25
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">WebGL编程起步</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p><img src="http://7tt058.com1.z0.glb.clouddn.com/webgl.jpg" alt="WebGL编程"></p>
+<p>上篇文章简单介绍了WebGL的一些相关概念、现状以及工作原理，没有涉及到具体编码，本文将使用WebGL的相关技术来实现一个简单的效果示例，从而让大家了解WebGL编程的基本流程和关键操作。最后，还介绍了一些WebGL的库和框架，恰当的使用这些第三方框架，可以大大提高我们的工作效率。</p>
+<a id="more"></a>
+<h3 id="开发流程">开发流程</h3><p>WebGL的开发过程主要包括以下几个步骤：</p>
+<h4 id="1-准备容器">1.准备容器</h4><p>WebGL要在页面上执行相关的渲染，必须依赖一个特定的容器，在HTML5中，使用的是Canvas作为容器。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">body</span> <span class="attribute">onload</span>=<span class="value">"start()"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">canvas</span> <span class="attribute">id</span>=<span class="value">"glcanvas"</span> <span class="attribute">width</span>=<span class="value">"640"</span> <span class="attribute">height</span>=<span class="value">"480"</span>&gt;</span></span><br><span class="line">    Your browser doesn't appear to support the HTML5 canvas element.</span><br><span class="line">  <span class="tag">&lt;/<span class="title">canvas</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如上所示，我们在HTML中添加了一个canvas元素，并且设置了onload事件作为入口，后续的所有业务逻辑都会在start函数中进行处理。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//WebGL全局变量</span></span><br><span class="line"><span class="keyword">var</span> gl；</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">"glcanvas"</span>);  </span><br><span class="line">    <span class="comment">//初始化上下文</span></span><br><span class="line">    gl = initGL(canvas);        </span><br><span class="line">    <span class="comment">//初始化着色器</span></span><br><span class="line">    initShaders();  </span><br><span class="line">    <span class="comment">//生成/加载模型数据</span></span><br><span class="line">    initBuffers();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//设置擦除颜色为黑色，透明度不透明</span></span><br><span class="line">    gl.clearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);  </span><br><span class="line">    <span class="comment">//开启“深度测试”，z-缓存      </span></span><br><span class="line">    gl.enable(gl.DEPTH_TEST); </span><br><span class="line">        </span><br><span class="line">    <span class="comment">//渲染</span></span><br><span class="line">    drawScene(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面的代码可以看出，我们整个的过程主要包含了四个比较重要的阶段：<i>初始化上下文</i>、<i>初始化着色器</i>、<i>加载模型数据</i>和<i>渲染</i>。下面会对这几个过程做详细介绍。</p>
+<h4 id="2-初始化上下文">2.初始化上下文</h4><p>initGL方法主要用来初始化WebGL的绘制环境：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initGL</span><span class="params">(canvas)</span> </span>&#123;  </span><br><span class="line">  	gl=<span class="literal">null</span>;      </span><br><span class="line">  	<span class="keyword">try</span> &#123;</span><br><span class="line">    		<span class="comment">//尝试创建标准上下文，如果失败，回退到试验性上下文</span></span><br><span class="line">    		gl = canvas.getContext(<span class="string">"webgl"</span>) || canvas.getContext(<span class="string">"experimental-webgl"</span>);</span><br><span class="line">  	&#125;</span><br><span class="line">  	<span class="keyword">catch</span>(e) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  	<span class="comment">//如果没有GL上下文，马上放弃</span></span><br><span class="line">  	<span class="keyword">if</span> (!gl) &#123;</span><br><span class="line">    		alert(<span class="string">"Unable to initialize WebGL. Your browser may not support it."</span>);</span><br><span class="line">  	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，我们为了得到WebGL上下文，需要使用canvas的getContext方法，这里有两个参数值可以使用：<b>webgl</b>或者<b>experimental-webgl</b>。不同浏览器环境下使用的参数不一样，具体可参照<a href="http://caniuse.com/#search=webgl" target="_blank" rel="external">WebGL - 3D Canvas graphics</a>。</p>
+<h4 id="3-初始化着色器">3.初始化着色器</h4><p>在3D场景的开发过程中会涉及到非常多的计算过程（颜色、位置等），为了提高效率，使用了硬件加速，这个时候GPU的强大计算能力得到了运用。但是，怎样告诉它正确执行相关计算逻辑呢？答案是着色器。着色器告诉相关计算单元做什么，而着色器语言（GLSL）来告诉它们怎么做。</p>
+<p><a href="https://www.khronos.org/registry/gles/specs/2.0/GLSL_ES_Specification_1.0.17.pdf" target="_blank" rel="external">The OpenGL ES Shading Language</a></p>
+<p>一般情况下，我们在HTML中定义着色器，然后在代码中获取并使用。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">id</span>=<span class="value">"shader-fs"</span> <span class="attribute">type</span>=<span class="value">"x-shader/x-fragment"</span>&gt;</span><span class="glsl"></span><br><span class="line">    <span class="keyword">precision</span> <span class="keyword">mediump</span> <span class="keyword">float</span>;</span><br><span class="line">    <span class="keyword">varying</span> <span class="keyword">vec4</span> vColor;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> main(<span class="keyword">void</span>) &#123;</span><br><span class="line">        <span class="built_in">gl_FragColor</span> = vColor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">id</span>=<span class="value">"shader-vs"</span> <span class="attribute">type</span>=<span class="value">"x-shader/x-vertex"</span>&gt;</span><span class="glsl"></span><br><span class="line">    <span class="keyword">attribute</span> <span class="keyword">vec3</span> aVertexPosition;</span><br><span class="line">    <span class="keyword">attribute</span> <span class="keyword">vec4</span> aVertexColor;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">uniform</span> <span class="keyword">mat4</span> uMVMatrix;</span><br><span class="line">    <span class="keyword">uniform</span> <span class="keyword">mat4</span> uPMatrix;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">varying</span> <span class="keyword">vec4</span> vColor;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> main(<span class="keyword">void</span>) &#123;</span><br><span class="line">        <span class="built_in">gl_Position</span> = uPMatrix * uMVMatrix * <span class="keyword">vec4</span>(aVertexPosition, <span class="number">1.0</span>);</span><br><span class="line">        vColor = aVertexColor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上文的代码中定义了两个着色器：<b>片段着色器</b>和<b>顶点着色器</b>。</p>
+<p>顶点着色器定义了模型中顶点的位置和颜色信息。</p>
+<p>片段着色器通过差值的方法来处理WebGL中像素的相关数据，这里定义了像素上颜色的计算方法。</p>
+<p>我们在initShaders方法中来查找使用着色器：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> shaderProgram;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">initShaders</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> fragmentShader = getShader(gl, <span class="string">"shader-fs"</span>);</span><br><span class="line">        <span class="keyword">var</span> vertexShader = getShader(gl, <span class="string">"shader-vs"</span>);</span><br><span class="line">        <span class="comment">//创建着色器</span></span><br><span class="line">        shaderProgram = gl.createProgram();</span><br><span class="line">        gl.attachShader(shaderProgram, vertexShader);</span><br><span class="line">        gl.attachShader(shaderProgram, fragmentShader);</span><br><span class="line">        <span class="comment">//链接着色器程序</span></span><br><span class="line">        gl.linkProgram(shaderProgram);</span><br><span class="line">        <span class="comment">//检查着色器是否成功连接</span></span><br><span class="line">        <span class="keyword">if</span> (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) &#123;</span><br><span class="line">            alert(<span class="string">"Could not initialise shaders"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//连接成功后激活渲染器程序</span></span><br><span class="line">        gl.useProgram(shaderProgram);</span><br><span class="line"></span><br><span class="line">        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, <span class="string">"aVertexPosition"</span>);</span><br><span class="line">        <span class="comment">//启用顶点缓冲区数组</span></span><br><span class="line">        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);</span><br><span class="line"></span><br><span class="line">        shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, <span class="string">"aVertexColor"</span>);</span><br><span class="line">        gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);</span><br><span class="line"></span><br><span class="line">        shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, <span class="string">"uPMatrix"</span>);</span><br><span class="line">        shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, <span class="string">"uMVMatrix"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码加载了模型数据，并且通过一系列的绑定操作和相关设置，告诉GPU如何去处理相关的渲染过程。</p>
+<p>这里使用了一个工具函数getShader，它的作用是从DOM中获取定义的相关着色器程序，并返回编译好的渲染器程序：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getShader</span><span class="params">(gl, id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> shaderScript, theSource, currentChild, shader;</span><br><span class="line">    </span><br><span class="line">    shaderScript = <span class="built_in">document</span>.getElementById(id);    </span><br><span class="line">    <span class="keyword">if</span> (!shaderScript) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取着色器的文本内容保存到theSource</span></span><br><span class="line">    theSource = <span class="string">""</span>;</span><br><span class="line">    currentChild = shaderScript.firstChild;    </span><br><span class="line">    <span class="keyword">while</span>(currentChild) &#123;</span><br><span class="line">        <span class="keyword">if</span> (currentChild.nodeType == currentChild.TEXT_NODE) &#123;</span><br><span class="line">            theSource += currentChild.textContent;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        currentChild = currentChild.nextSibling;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//创建顶点着色器或片段着色器</span></span><br><span class="line">    <span class="keyword">if</span> (shaderScript.type == <span class="string">"x-shader/x-fragment"</span>) &#123;</span><br><span class="line">      shader = gl.createShader(gl.FRAGMENT_SHADER);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (shaderScript.type == <span class="string">"x-shader/x-vertex"</span>) &#123;</span><br><span class="line">      shader = gl.createShader(gl.VERTEX_SHADER);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     <span class="comment">//非法类型返回null</span></span><br><span class="line">     <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">   gl.shaderSource(shader, theSource);</span><br><span class="line">    </span><br><span class="line">   <span class="comment">//编译着色器代码</span></span><br><span class="line">   gl.compileShader(shader);  </span><br><span class="line">    </span><br><span class="line">   <span class="comment">//检查是否编译成功</span></span><br><span class="line">   <span class="keyword">if</span> (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) &#123;  </span><br><span class="line">      alert(<span class="string">"An error occurred compiling the shaders: "</span> + gl.getShaderInfoLog(shader));  </span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;  </span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">//成功后返回编译好的着色器</span></span><br><span class="line">   <span class="keyword">return</span> shader;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4-生成/加载模型数据">4.生成/加载模型数据</h4><p>下面的initBuffers函数来将模型数据加载到缓冲器中，这样将顶点位置和颜色数据在上下文中准备就绪，随后才可以进行下一步的渲染操作。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> triangleVertexPositionBuffer;</span><br><span class="line">    <span class="keyword">var</span> triangleVertexColorBuffer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">initBuffers</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        triangleVertexPositionBuffer = gl.createBuffer();</span><br><span class="line">        gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);</span><br><span class="line">        <span class="keyword">var</span> vertices = [</span><br><span class="line">             <span class="number">0.0</span>,  <span class="number">1.0</span>,  <span class="number">0.0</span>,</span><br><span class="line">            -<span class="number">1.0</span>, -<span class="number">1.0</span>,  <span class="number">0.0</span>,</span><br><span class="line">             <span class="number">1.0</span>, -<span class="number">1.0</span>,  <span class="number">0.0</span></span><br><span class="line">        ];</span><br><span class="line">        gl.bufferData(gl.ARRAY_BUFFER, <span class="keyword">new</span> <span class="built_in">Float32Array</span>(vertices), gl.STATIC_DRAW);</span><br><span class="line">        triangleVertexPositionBuffer.itemSize = <span class="number">3</span>;</span><br><span class="line">        triangleVertexPositionBuffer.numItems = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">        triangleVertexColorBuffer = gl.createBuffer();</span><br><span class="line">        gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer);</span><br><span class="line">        <span class="keyword">var</span> colors = [</span><br><span class="line">            <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>,</span><br><span class="line">            <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>,</span><br><span class="line">            <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span></span><br><span class="line">        ];</span><br><span class="line">        gl.bufferData(gl.ARRAY_BUFFER, <span class="keyword">new</span> <span class="built_in">Float32Array</span>(colors), gl.STATIC_DRAW);</span><br><span class="line">        triangleVertexColorBuffer.itemSize = <span class="number">4</span>;</span><br><span class="line">        triangleVertexColorBuffer.numItems = <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="5-渲染">5.渲染</h4><p>经过上一步的模型数据准备后，就可以直接通过WegGL来进行渲染了。下面的drawScene方法，对3D模型进行了一些基本设置，然后根据缓冲区中的相关数据，来绘制出相应的效果。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawScene</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        gl.viewport(<span class="number">0</span>, <span class="number">0</span>, gl.viewportWidth, gl.viewportHeight);</span><br><span class="line">        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">        pMatrix = okMat4Proj(<span class="number">45.0</span>, gl.viewportWidth / gl.viewportHeight, <span class="number">0.1</span>, <span class="number">100.0</span>);</span><br><span class="line">        mvMatrix = okMat4Trans(-<span class="number">1.5</span>, <span class="number">0.0</span>, -<span class="number">7.0</span>);</span><br><span class="line"></span><br><span class="line">        gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);</span><br><span class="line">        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize,</span><br><span class="line">  gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer);</span><br><span class="line">        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, triangleVertexColorBuffer.itemSize, </span><br><span class="line">gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        setMatrixUniforms();</span><br><span class="line">        gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, triangleVertexPositionBuffer.numItems);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>至此，一个完整的WebGL程序基本开发完毕了，通过上面的过程我们发现，使用原生的WebGL来进行特殊场景的开发简直就是一种折磨。我们需要了解各种实现细节和专业知识，这对于非专业的开发人员是一种极大的挑战。所以，自然而然就有大量的类库和框架出现，来简化我们的开发过程，提高我们的工作效率。</p>
+<p><a href="https://jsfiddle.net/p924bve3/" target="_blank" rel="external">点击这里可以看到用three.js来实现的上文效果</a></p>
+<h3 id="WebGL库和框架">WebGL库和框架</h3><p>下面简单介绍一些WebGL的类库或者框架：</p>
+<p><a href="http://threejs.org/" target="_blank" rel="external">three.js</a>，这是一个低复杂、轻量级的开源框架，也是目前应用最广泛的3D框架，模型文件支持多种格式，渲染器的选择也非常灵活，方便使用者快速开发各种效果。</p>
+<p><a href="http://www.senchalabs.org/philogl/" target="_blank" rel="external">PhiloGL</a>，这也是一个开源框架，注重性能，拥有非常强大的接口，比较适合数据可视化和游戏开发。</p>
+<p><a href="http://www.babylonjs.com/" target="_blank" rel="external">Babylon.js</a>，这是一款非常适合作为游戏引擎的开源框架，让WebGL的使用更加简单、强大，非常适合游戏开发。</p>
+<p><a href="http://scenejs.org/" target="_blank" rel="external">SceneJS</a>，这一开源框架的特点在于，对于高精度的细节控制非常好，适合的领域有工程学、医学建模等。</p>
+<p><a href="http://www.ambiera.com/copperlicht/" target="_blank" rel="external">CopperLicht</a>，这是一个非常出色的3D引擎，并且带有编辑器，唯一的缺点是，他不是开源的，如果商用需要购买。</p>
+<h3 id="参考">参考</h3><ol>
+<li><a href="http://www.uml.org.cn/html/201208151.asp" target="_blank" rel="external">突袭HTML5之WebGL 3D概述</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/WebGL/Adding_2D_content_to_a_WebGL_context" target="_blank" rel="external">Adding 2D content to a WebGL context</a></li>
+<li><a href="https://www.khronos.org/registry/gles/specs/2.0/GLSL_ES_Specification_1.0.17.pdf" target="_blank" rel="external">The OpenGL® ES Shading Language</a></li>
+<li><a href="http://www.csdn.net/article/a/2013-12-18/15817486" target="_blank" rel="external">WebGL 入门 – WebGL框架</a></li>
+</ol>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/WebGL/">WebGL</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/WebGL/">WebGL</a>, <a class="tags-link" href="/tags/three-js/">three.js</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/05/25/start-coding-in-WebGL/" data-title="WebGL编程起步" data-url="http://reygreen1.github.io/2015/05/25/start-coding-in-WebGL/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"curry2015"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+	<!-- 多说公共JS代码 end -->
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">guorui</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+  
+   |
+  Modified by <a href="/">guorui</a>
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="http://s7.qhimg.com/lib/jquery/1102.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'curry2015' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

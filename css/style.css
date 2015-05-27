@@ -17,12 +17,12 @@ html {
 body {
   padding: 50px 0;
   margin: 0;
-  font: 1em/1.5 "Droid Serif", Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 1em/1.5 Cambria, Georgia, "Microsoft Jhenghei", "Hiragino Sans GB", "Microsoft YaHei", "Times New Roman", serif;
   color: #555;
   font-weight: 300;
 }
 .wrapper {
-  width: 780px;
+  width: 960px;
   margin: 0 auto;
   background: #dedede;
   -webkit-border-radius: 8px;
@@ -96,7 +96,7 @@ strong {
 #header .nav {
   float: right;
   font-size: 0.875em;
-  font-family: "Droid Serif", Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family: Cambria, Georgia, "Microsoft Jhenghei", "Hiragino Sans GB", "Microsoft YaHei", "Times New Roman", serif;
   line-height: 2.5em;
 }
 #header .nav ul {
@@ -276,7 +276,7 @@ article header .icon:before {
   text-align: center;
 }
 article header time {
-  font: 0.9em "Droid Serif", Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 0.9em Cambria, Georgia, "Microsoft Jhenghei", "Hiragino Sans GB", "Microsoft YaHei", "Times New Roman", serif;
   margin-bottom: 5px;
   display: block;
   line-height: 1;
@@ -284,7 +284,7 @@ article header time {
 article header .title {
   font-size: 1.5em;
   font-weight: normal;
-  line-height: 1.2;
+  line-height: 1.5;
   margin: 0;
   padding: 0;
   text-shadow: rgba(255,255,255,0.9) 0 1px 0;
@@ -296,7 +296,6 @@ article header .title a:hover {
   color: #069;
 }
 article .entry {
-  font-size: 0.95em;
   text-align: justify;
   line-height: 1.6;
 }
@@ -308,15 +307,14 @@ article .entry h5,
 article .entry h6 {
   color: #222;
   padding: 0;
-  margin: 0 0 20px;
-  line-height: 1.2;
+  line-height: 1.5;
 }
 article .entry p,
 article .entry ul,
 article .entry ol,
 article .entry table,
 article .entry dl {
-  margin: 0 0 20px;
+  margin: 1.6em 0;
 }
 article .entry p {
   white-space: pre-wrap;
@@ -371,7 +369,7 @@ article .entry iframe {
 }
 article .entry .caption {
   display: block;
-  margin-top: 5px;
+  margin-top: 10px;
   color: #aaa;
   position: relative;
   font-size: 0.9em;
@@ -389,7 +387,6 @@ article .entry code,
 article .entry pre {
   font-family: Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
   color: #333;
-  font-size: 0.8em;
   overflow-x: scroll;
 }
 article .entry code {
@@ -515,7 +512,7 @@ article footer .tags:before {
 #pagination a {
   display: block;
   padding: 5px 10px;
-  font-family: "Droid Serif", Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family: Cambria, Georgia, "Microsoft Jhenghei", "Hiragino Sans GB", "Microsoft YaHei", "Times New Roman", serif;
   background: #069;
   color: #fff;
   text-decoration: none;
@@ -568,7 +565,7 @@ article footer .tags:before {
   font-size: 1.1em;
 }
 #footer {
-  width: 780px;
+  width: 960px;
   margin: 20px auto 0;
   padding: 20px 0 0;
   font-size: 0.875em;

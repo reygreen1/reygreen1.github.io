@@ -319,6 +319,14 @@ article .entry dl {
 article .entry p {
   white-space: pre-wrap;
   word-wrap: break-word;
+  color: #444;
+}
+article .entry p em {
+  color: rgba(0,0,0,0.9);
+  font-weight: bold;
+  font-style: normal;
+  padding: 0 0.5em;
+  background-color: #eee;
 }
 article .entry h1,
 article .entry h2,

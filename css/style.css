@@ -321,7 +321,7 @@ article .entry p {
   word-wrap: break-word;
   color: #444;
 }
-article .entry p em {
+article .entry em {
   color: rgba(0,0,0,0.9);
   font-weight: bold;
   font-style: normal;

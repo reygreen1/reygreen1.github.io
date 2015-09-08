@@ -1,0 +1,238 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>circle progress 环形进度条 | Rey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="guorui">
+  
+  
+    <meta name="description" content="最近开发中有这样一个需求，需要设计出环形进度条的效果，而且要兼容低版本浏览器。
+我们知道，传统方式下，除非使用图片，不然没办法做出这种圆环的动态效果。但是进度数据的范围相对而言比较广（整数值状态下为 0%~100% ，约 100 个独立状态），每个状态用图片来做显然是不现实的。
+既然传统方式不行，那就必须考虑其他方式来解决问题。CSS3、Canvas 等都是可以参考的解决方案。使用这些技术有利有弊">
+  
+  <meta name="description" content="最近开发中有这样一个需求，需要设计出环形进度条的效果，而且要兼容低版本浏览器。
+我们知道，传统方式下，除非使用图片，不然没办法做出这种圆环的动态效果。但是进度数据的范围相对而言比较广（整数值状态下为 0%~100% ，约 100 个独立状态），每个状态用图片来做显然是不现实的。
+既然传统方式不行，那就必须考虑其他方式来解决问题。CSS3、Canvas 等都是可以参考的解决方案。使用这些技术有利有弊">
+<meta property="og:type" content="article">
+<meta property="og:title" content="circle progress 环形进度条">
+<meta property="og:url" content="http://reygreen1.github.io/2015/09/08/canvas-circle-progress/index.html">
+<meta property="og:site_name" content="Rey's Blog">
+<meta property="og:description" content="最近开发中有这样一个需求，需要设计出环形进度条的效果，而且要兼容低版本浏览器。
+我们知道，传统方式下，除非使用图片，不然没办法做出这种圆环的动态效果。但是进度数据的范围相对而言比较广（整数值状态下为 0%~100% ，约 100 个独立状态），每个状态用图片来做显然是不现实的。
+既然传统方式不行，那就必须考虑其他方式来解决问题。CSS3、Canvas 等都是可以参考的解决方案。使用这些技术有利有弊">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/progress.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="circle progress 环形进度条">
+<meta name="twitter:description" content="最近开发中有这样一个需求，需要设计出环形进度条的效果，而且要兼容低版本浏览器。
+我们知道，传统方式下，除非使用图片，不然没办法做出这种圆环的动态效果。但是进度数据的范围相对而言比较广（整数值状态下为 0%~100% ，约 100 个独立状态），每个状态用图片来做显然是不现实的。
+既然传统方式不行，那就必须考虑其他方式来解决问题。CSS3、Canvas 等都是可以参考的解决方案。使用这些技术有利有弊">
+  
+    <link rel="alternate" href="/atom.xml" title="Rey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Rey&#39;s Blog</a></h1>
+    <p><a href="/">&lt;!-- A site to show something about myself --&gt;</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/09/08/canvas-circle-progress/">
+  <time datetime="2015-09-07T16:00:00.000Z">
+    2015-09-08
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">circle progress 环形进度条</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p><img src="http://7tt058.com1.z0.glb.clouddn.com/progress.png" alt="circle progress"></p>
+<p>最近开发中有这样一个需求，需要设计出环形进度条的效果，而且要兼容低版本浏览器。</p>
+<p>我们知道，传统方式下，除非使用图片，不然没办法做出这种圆环的动态效果。但是进度数据的范围相对而言比较广（整数值状态下为 0%~100% ，约 100 个独立状态），每个状态用图片来做显然是不现实的。</p>
+<p>既然传统方式不行，那就必须考虑其他方式来解决问题。CSS3、Canvas 等都是可以参考的解决方案。使用这些技术有利有弊，依赖其他一些辅助库或框架，可以让解决方案变得更加完美。</p>
+<p>我们分析下使用这些技术是如何解决环形进度条需求的。</p>
+<a id="more"></a>
+<h2 id="传统方式">传统方式</h2><p>传统方式一般采用背景图片来解决上面的需求。</p>
+<h3 id="原理">原理</h3><p>具体做法是，将各个状态下的图片拼成一个 sprite ，定时更新 background-position 来显示各个状态下的图片，时间间隔掌握合适的话就形成了动画。这是最简单粗暴的做法。</p>
+<h3 id="优势">优势</h3><ul>
+<li>基本不用编写复杂的绘图代码，只要写好定时器部分的逻辑即可完成交互。</li>
+<li>每个状态都可以用图来表示，展现复杂的进度效果很简单，只需要修改 PSD 即可。</li>
+<li>整体来说，对开发人员的要求较低。</li>
+</ul>
+<h3 id="缺点">缺点</h3><ul>
+<li>如前文所述，对状态点的数目很敏感。正常情况下的 100（0%~100%） 个状态需要相同数据的图片。当然也可以减少状态点的数目，但是这么做有可能会影响到后期状态切换时的渐进效果。</li>
+<li>后期需要修改状态点展现时，需要重新制作 sprite 。使用工具可以解决这个问题。</li>
+</ul>
+<h2 id="CSS3">CSS3</h2><p>CSS3 本身提供很多强大的属性，可以通过使用 border-radius、transform 等属性来完成上面的需求。</p>
+<h3 id="原理-1">原理</h3><p>先做一个环形的进度条，然后在它上面分别放置左右两个半圆（使用 clip 来显示一个圆的一半区域），最后定时旋转（使用 transform 中的 rotate 来实现）这两个半圆来显示出下面的进度条。连续执行后就形成了渐进的动画。</p>
+<p>这里主要使用的 CSS 属性的相关用法可以参考下面的链接：</p>
+<ul>
+<li><a href="http://www.w3cplus.com/css3/border-radius" target="_blank" rel="external">border-radius</a></li>
+<li><a href="http://www.w3cplus.com/css3/clip.html" target="_blank" rel="external">clip</a></li>
+<li><a href="http://www.w3cplus.com/content/css3-transform" target="_blank" rel="external">transform</a></li>
+</ul>
+<h3 id="实例">实例</h3><iframe height="268" scrolling="no" src="//codepen.io/reygreen1/embed/pjJJqe/?height=268&amp;theme-id=18663&amp;default-tab=result" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="http://codepen.io/reygreen1/pen/pjJJqe/" target="_blank" rel="external">circleProgress</a> by reygreen1 (<a href="http://codepen.io/reygreen1" target="_blank" rel="external">@reygreen1</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.<br></iframe>
+
+<h3 id="优势-1">优势</h3><ul>
+<li>由于使用 CSS 属性设置进度条状态，修改状态就比较方便，只需要修改属性值即可。</li>
+<li>已经有很多 CSS 效果的工具或者站点，类似效果也有很多 demo，可以直接拿来修改使用。</li>
+</ul>
+<h3 id="缺点-1">缺点</h3><ul>
+<li>低版本浏览器的支持问题。使用的一些属性在低版本浏览器下不兼容，无法满足上文的第二条需求。有相关库或者脚本来解决 IE8 及更低版本浏览器对 CSS3 的支持问题（ <a href="http://www.zhangxinxu.com/wordpress/2010/04/%E8%AE%A9ie6ie7ie8%E6%B5%8F%E8%A7%88%E5%99%A8%E6%94%AF%E6%8C%81css3%E5%B1%9E%E6%80%A7/" target="_blank" rel="external">ie-css3.htc</a>、<a href="http://css3pie.com/" target="_blank" rel="external">CSS3 PIE</a>等）。</li>
+<li>使用 CSS3 可以制作很酷炫的效果，但对开发人员的要求也较高。在效果制作中有比较复杂的编码过程，即使是使用已有的代码，也需要花费一定成本来了解实现原理。</li>
+</ul>
+<h2 id="Canvas">Canvas</h2><p>Canvas 的实现就是使用 canvas 相关 API 在画板上画圆，定时刷新画板即可实现动态效果。</p>
+<h3 id="原理-2">原理</h3><p>使用 canvas 相关接口（ arc、fillStyle、fill等）在画板上画图，使用定时器定时刷新画板上的显示，达到渐进动画的效果。</p>
+<p>canvas 的相关使用可以参考这个链接：<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API" target="_blank" rel="external">Canvas</a>。</p>
+<h3 id="实例-1">实例</h3><iframe height="268" scrolling="no" src="//codepen.io/reygreen1/embed/bVdpNy/?height=268&amp;theme-id=18663&amp;default-tab=result" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="http://codepen.io/reygreen1/pen/bVdpNy/" target="_blank" rel="external">drawCircleProgress</a> by reygreen1 (<a href="http://codepen.io/reygreen1" target="_blank" rel="external">@reygreen1</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.<br></iframe>
+
+<h3 id="优势-2">优势</h3><ul>
+<li>canvas 制作的动画效果非常丰富，API 的使用也非常方便。熟悉的开发人员可以很快开发出强大的效果。</li>
+<li>更多的网站和 DEMO 供你参考选择。</li>
+</ul>
+<h3 id="缺点-2">缺点</h3><ul>
+<li>低版本浏览器兼容性问题。不支持的浏览器无法看到任何 canvas 上展现的效果。可以使用 <a href="https://github.com/arv/ExplorerCanvas" target="_blank" rel="external">excanvas.js</a> 来解决兼容性问题。</li>
+<li>要求开发人员对 canvas 开发有一定了解。</li>
+</ul>
+<h2 id="总结">总结</h2><p>上面主要分析了三种圆形进度条的实现方式，各有优劣。读者可以根据自己的情况选择合适的解决方案。</p>
+<p>笔者选择的是 canvas 的方式，使用 excanvas.js（压缩后约 7.5K） 来解决低版本浏览器的兼容性问题。</p>
+<p>excanvas.js 相关介绍：</p>
+<blockquote>
+<p>DESCRIPTION</p>
+<p>Firefox, Safari and Opera 9 support the canvas tag to allow 2D command-based<br>drawing operations. ExplorerCanvas brings the same functionality to Internet<br>Explorer; web developers only need to include a single script tag in their<br>existing canvas webpages to enable this support.</p>
+</blockquote>
+<p>但在使用过程中还是遇到了一些坑，如：</p>
+<ol>
+<li>excanvas.js 会对 canvas 做处理，<em>处理后 canvas 元素中的文本内容会被清空</em>。所以，如果有相关需要后续处理的数据不能放到 canvas 里，而要作为它的一个属性值来保存。具体可以参考上文实例中的 <em>process</em> 属性的设置。</li>
+<li>使用 canvas 中的 arc 方法，如果是顺时针方向，在起始位置一致时，IE 不会进行渲染。excanvas.js 源码是这么写的：</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IE won't render arches drawn counter clockwise if xStart == xEnd.</span></span><br><span class="line"><span class="keyword">if</span> (xStart == xEnd &amp;&amp; !aClockwise) &#123;</span><br><span class="line">      xStart += <span class="number">0.125</span>; <span class="comment">// Offset xStart by 1/80 of a pixel. Use something</span></span><br><span class="line">                       <span class="comment">// that can be represented in binary</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>即使它做了修正，在使用过程中还是可能出现问题，如果有类似场景需要特别注意。可以参考上文实例中关于进度为 100% 时做的修正代码。</p>
+<p>总体来说，这个脚本还是非常给力的，而且它已经出现在了一些产品的生产环境中，所以读者可以放心使用。</p>
+<h2 id="参考">参考</h2><ol>
+<li><a href="http://www.w3cplus.com/css3/create-radial-progress-bar-with-jQuery-and-css3.html" target="_blank" rel="external">利用jQuery和CSS实现环形进度条</a></li>
+<li><a href="http://caibaojian.com/canvas-circular.html" target="_blank" rel="external">canvas绘制旋转的圆环百分比进度条</a></li>
+<li><a href="http://www.jb51.net/css/28584.html" target="_blank" rel="external">让IE6、IE7、IE8支持CSS3的脚本</a></li>
+</ol>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/Canvas/">Canvas</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/canvas/">canvas</a>, <a class="tags-link" href="/tags/进度条/">进度条</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/09/08/canvas-circle-progress/" data-title="circle progress 环形进度条" data-url="http://reygreen1.github.io/2015/09/08/canvas-circle-progress/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"curry2015"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+	<!-- 多说公共JS代码 end -->
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">guorui</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+  
+   |
+  Modified by <a href="/">guorui</a>
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="http://s7.qhimg.com/lib/jquery/1102.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'curry2015' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

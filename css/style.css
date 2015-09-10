@@ -17,9 +17,9 @@ html {
 body {
   padding: 50px 0;
   margin: 0;
-  font: 1em/1.5 Cambria, Georgia, "Microsoft Jhenghei", "Hiragino Sans GB", "Microsoft YaHei", "Times New Roman", serif;
-  color: #555;
-  font-weight: 300;
+  font: 1em/1.7 "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  color: #2f2f2f;
+  font-weight: 400;
 }
 .wrapper {
   width: 960px;
@@ -36,11 +36,11 @@ footer {
   display: block;
 }
 a {
-  color: #069;
+  color: #4094c7;
   text-decoration: none;
 }
 a:hover {
-  color: #ae0000;
+  color: #f60;
 }
 p {
   margin: 0 0 20px;
@@ -51,11 +51,7 @@ strong {
   font-weight: 700;
 }
 .content {
-  background: -webkit-linear-gradient(#fff, #fafafa 700px);
-  background: -moz-linear-gradient(#fff, #fafafa 700px);
-  background: -o-linear-gradient(#fff, #fafafa 700px);
-  background: -ms-linear-gradient(#fff, #fafafa 700px);
-  background: linear-gradient(#fff, #fafafa 700px);
+  background: #fff;
   -webkit-border-radius: 0 0 8px 8px;
   border-radius: 0 0 8px 8px;
   border-top: 1px solid #fff;
@@ -96,7 +92,7 @@ strong {
 #header .nav {
   float: right;
   font-size: 0.875em;
-  font-family: Cambria, Georgia, "Microsoft Jhenghei", "Hiragino Sans GB", "Microsoft YaHei", "Times New Roman", serif;
+  font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
   line-height: 2.5em;
 }
 #header .nav ul {
@@ -276,15 +272,15 @@ article header .icon:before {
   text-align: center;
 }
 article header time {
-  font: 0.9em Cambria, Georgia, "Microsoft Jhenghei", "Hiragino Sans GB", "Microsoft YaHei", "Times New Roman", serif;
+  font: 0.9em "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
   margin-bottom: 5px;
   display: block;
   line-height: 1;
 }
 article header .title {
-  font-size: 1.5em;
-  font-weight: normal;
-  line-height: 1.5;
+  font-size: 1.8em;
+  font-weight: 400;
+  line-height: 1.4;
   margin: 0;
   padding: 0;
   text-shadow: rgba(255,255,255,0.9) 0 1px 0;
@@ -293,11 +289,10 @@ article header .title a {
   color: #222;
 }
 article header .title a:hover {
-  color: #069;
+  color: #4094c7;
 }
 article .entry {
   text-align: justify;
-  line-height: 1.6;
 }
 article .entry h1,
 article .entry h2,
@@ -305,9 +300,17 @@ article .entry h3,
 article .entry h4,
 article .entry h5,
 article .entry h6 {
-  color: #222;
   padding: 0;
-  line-height: 1.5;
+  font-weight: 400;
+}
+article .entry h1,
+article .entry h2,
+article .entry h3,
+article .entry h4 {
+  margin: 1em 0;
+}
+article .entry h1 {
+  font-size: 1.75em;
 }
 article .entry p,
 article .entry ul,
@@ -319,31 +322,10 @@ article .entry dl {
 article .entry p {
   white-space: pre-wrap;
   word-wrap: break-word;
-  color: #444;
 }
 article .entry em {
-  color: rgba(0,0,0,0.9);
-  font-weight: bold;
+  font-weight: 700;
   font-style: normal;
-  padding: 0 0.5em;
-  background-color: #eee;
-}
-article .entry h1,
-article .entry h2,
-article .entry h3 {
-  line-height: 1.1;
-}
-article .entry h1 {
-  font-size: 1.75em;
-}
-article .entry h2 {
-  color: #393939;
-}
-article .entry h3,
-article .entry h4,
-article .entry h5,
-article .entry h6 {
-  color: #494949;
 }
 article .entry blockquote {
   margin: 0 -30px 20px;
@@ -378,7 +360,7 @@ article .entry iframe {
 article .entry .caption {
   display: block;
   margin-top: 10px;
-  color: #aaa;
+  color: #999;
   position: relative;
   font-size: 0.9em;
   padding-left: 25px;
@@ -520,8 +502,8 @@ article footer .tags:before {
 #pagination a {
   display: block;
   padding: 5px 10px;
-  font-family: Cambria, Georgia, "Microsoft Jhenghei", "Hiragino Sans GB", "Microsoft YaHei", "Times New Roman", serif;
-  background: #069;
+  font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  background: #4094c7;
   color: #fff;
   text-decoration: none;
 }

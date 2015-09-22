@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>SVG 入门指南 | Rey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="guorui">
+  
+  
+    <meta name="description" content="SVG 是可缩放矢量图形（Scalable Vector Graphics，SVG），是一种描述二位矢量图形的 XML 标记语言。
+百科中对 SVG 的说明：
+
+
+SVG 指可伸缩矢量图形 (Scalable Vector Graphics)
+SVG 用来定义用于网络的基于矢量的图形
+SVG 使用 XML 格式定义图形
+SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失
+SVG 是万维网联">
+  
+  <meta name="description" content="SVG 是可缩放矢量图形（Scalable Vector Graphics，SVG），是一种描述二位矢量图形的 XML 标记语言。
+百科中对 SVG 的说明：
+
+
+SVG 指可伸缩矢量图形 (Scalable Vector Graphics)
+SVG 用来定义用于网络的基于矢量的图形
+SVG 使用 XML 格式定义图形
+SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失
+SVG 是万维网联">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SVG 入门指南">
+<meta property="og:url" content="http://reygreen1.github.io/2015/09/22/svg-introduction/index.html">
+<meta property="og:site_name" content="Rey's Blog">
+<meta property="og:description" content="SVG 是可缩放矢量图形（Scalable Vector Graphics，SVG），是一种描述二位矢量图形的 XML 标记语言。
+百科中对 SVG 的说明：
+
+
+SVG 指可伸缩矢量图形 (Scalable Vector Graphics)
+SVG 用来定义用于网络的基于矢量的图形
+SVG 使用 XML 格式定义图形
+SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失
+SVG 是万维网联">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/svg.png">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/canvas_svg.jpg">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/Canvas_Vs_SVG2.png">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/ai.jpg">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/Snap.svg-images.png">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/svg-raphael.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SVG 入门指南">
+<meta name="twitter:description" content="SVG 是可缩放矢量图形（Scalable Vector Graphics，SVG），是一种描述二位矢量图形的 XML 标记语言。
+百科中对 SVG 的说明：
+
+
+SVG 指可伸缩矢量图形 (Scalable Vector Graphics)
+SVG 用来定义用于网络的基于矢量的图形
+SVG 使用 XML 格式定义图形
+SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失
+SVG 是万维网联">
+  
+    <link rel="alternate" href="/atom.xml" title="Rey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="http://s0.qhimg.com/static/79ec3f5e5536f764/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Rey&#39;s Blog</a></h1>
+    <p><a href="/">&lt;!-- A site to show something about myself --&gt;</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/09/22/svg-introduction/">
+  <time datetime="2015-09-21T16:00:00.000Z">
+    2015-09-22
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">SVG 入门指南</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p><img src="http://7tt058.com1.z0.glb.clouddn.com/svg.png" alt="svg"></p>
+<p>SVG 是可缩放矢量图形（Scalable Vector Graphics，SVG），是一种描述二位矢量图形的 XML 标记语言。</p>
+<p>百科中对 SVG 的说明：</p>
+<blockquote>
+<ol>
+<li>SVG 指可伸缩矢量图形 (Scalable Vector Graphics)</li>
+<li>SVG 用来定义用于网络的基于矢量的图形</li>
+<li>SVG 使用 XML 格式定义图形</li>
+<li>SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失</li>
+<li>SVG 是万维网联盟的标准</li>
+<li>SVG 与诸如 DOM 和 XSL 之类的 W3C 标准是一个整体</li>
+</ol>
+</blockquote>
+<p>SVG 和 Canvas 是 HTML5 中主要的 2D 图形相关技术。一方面，在 HTML5 发展的大环境下，SVG 有很好的机遇。另一方面，它的主要对手是 flash，同 flash 相比，它与很多标准（如 XSL 和 DOM 等）相兼容，而 flash 是非开源的私有技术。所以，如此看来，SVG 在未来的图形开发中必将占据重要的一席之地。</p>
+<a id="more"></a>
+<h2 id="到底选择_Canvas_还是_SVG_？">到底选择 Canvas 还是 SVG ？</h2><p>既然两者都是 HTML5 中的图形技术，那么到底该选择哪个来解决问题呢？</p>
+<p>解决问题应该注意实际场景，然后根据技术特点来进行选型。所以，我们先来比较下两者的主要特点：</p>
+<p><img src="http://7tt058.com1.z0.glb.clouddn.com/canvas_svg.jpg" alt="Canvas VS SVG 1"></p>
+<p><img src="http://7tt058.com1.z0.glb.clouddn.com/Canvas_Vs_SVG2.png" alt="Canvas VS SVG 2"></p>
+<p>根据它们的不同特点，我们可以分析出各自的适用场景：</p>
+<p><strong>Canvas 适合像素处理、动态渲染和大数据量绘制的场景。</strong></p>
+<p><strong>SVG 适合静态图片展示、高保真文档查看和打印的场景。</strong></p>
+<p>所以，选择哪种技术，可以具体分析下业务场景。</p>
+<h2 id="基本知识">基本知识</h2><p>这篇文章是入门指南，非入门教程，不会对 SVG 的基础知识做详细介绍，只会对涉及的功能做简单描述。如果想了解具体的基础知识点，可以参考 MDN 上的文章：<a href="https://developer.mozilla.org/zh-CN/docs/Web/SVG" target="_blank" rel="external">SVG</a>。</p>
+<p><strong>SVG 形状</strong>：提供了矩形（rect）、圆形（circle）、椭圆（ellipse）、线条（line）、多边形（polygon）、折线（polyline）、文本（text）等绘图接口。还有一个非常重要的功能：路径（path），后面会重点介绍。</p>
+<p><strong>SVG 滤镜</strong>：</p>
+<ul>
+<li>feBlend</li>
+<li>feColorMatrix</li>
+<li>feComponentTransfer</li>
+<li>feComposite</li>
+<li>feConvolveMatrix</li>
+<li>feDiffuseLighting</li>
+<li>feDisplacementMap</li>
+<li>feFlood</li>
+<li>feGaussianBlur</li>
+<li>feImage</li>
+<li>feMerge</li>
+<li>feMorphology</li>
+<li>feOffset</li>
+<li>feSpecularLighting</li>
+<li>feTile</li>
+<li>feTurbulence</li>
+<li>feDistantLight</li>
+<li>fePointLight</li>
+<li>feSpotLight</li>
+</ul>
+<p><strong>SVG 渐变</strong>：线性渐变（linearGradient）、放射性渐变（radialGradient）</p>
+<h2 id="路径（path）">路径（path）</h2><p>路径（path）在 SVG 中是非常重要的概念，有人曾这样说，了解了 path 也就基本学会了 SVG 80%的知识。</p>
+<p>路径包含了下面一些命令：</p>
+<ul>
+<li>M = move to 移动到</li>
+<li>L = line to 当前节点到指定(x,y)节点，直线连接</li>
+<li>H = horizontal line to 保持当前点的y坐标不变，x轴移动到x，形成水平线</li>
+<li>V = vertical line to 保持当前点的x坐标不变，y轴移动到y，形成垂直线</li>
+<li>C = curve to 三次贝塞尔曲线</li>
+<li>S = smooth curve to 平滑三次贝塞尔曲线</li>
+<li>Q = quadratic Bézier curve 二次贝塞尔曲线</li>
+<li>T = smooth quadratic Bézier curveto 平滑二次贝塞尔曲线 </li>
+<li>A = elliptical Arc 弧形</li>
+<li>Z = close path 将路径的开始和结束点用直线连接</li>
+</ul>
+<p>使用这些命令可以创建出各种复杂的图形。具体每个命令的用法可以参考 MDN 中的相关介绍。</p>
+<h2 id="SVG_生成工具">SVG 生成工具</h2><p>从上面介绍可以看出，简单的图形通过 SVG 的接口方便创建，但是遇到复杂的图形，工作将会变得非常复杂，各种命令的使用也会严重降低开发效率。所以，我们可以通过工具来生成复杂的 SVG 图像。</p>
+<p><strong><a href="https://code.google.com/p/svg-edit/" target="_blank" rel="external">Google 的 SVG 编辑器</a></strong> 或者也可以使用<a href="http://www.zhangxinxu.com/" target="_blank" rel="external">张鑫旭</a>自己网站上的<a href="http://www.zhangxinxu.com/sp/svg/" target="_blank" rel="external">在线编辑器</a>。</p>
+<p>另一个工具是，专业的图形设计软件、矢量绘制软件 — <a href="http://www.adobe.com/cn/products/illustrator.html" target="_blank" rel="external">Adobe Illustrator</a>。</p>
+<p><img src="http://7tt058.com1.z0.glb.clouddn.com/ai.jpg" alt="AI"></p>
+<h2 id="SVG_类库与框架">SVG 类库与框架</h2><p>写过 SVG 都会发现，直接使用各种命令在创建复杂的图形和交互的时候非常麻烦，所以各种类库和框架就应运而生，旨在提高开发效率。</p>
+<h3 id="Snap-svg">Snap.svg</h3><p><img src="http://7tt058.com1.z0.glb.clouddn.com/Snap.svg-images.png" alt="Snap.svg"></p>
+<p><a href="http://snapsvg.io/" target="_blank" rel="external">Snap.svg</a> 是为高级浏览器设计的类库，它号称：</p>
+<blockquote>
+<p>And the Snap.svg JavaScript library makes working with your SVG assets as easy as jQuery makes working with the DOM.</p>
+</blockquote>
+<p>上文是说，<strong>使用 Snap.svg 来操作 SVG 就像使用 jQuery 操作 DOM 一样简单高效</strong>。</p>
+<p><a href="https://github.com/adobe-webplatform/Snap.svg" target="_blank" rel="external">Github项目主页</a>，已经有 7000 多个 star。</p>
+<p>Snap 的中文 API 文档可以参考这里：<a href="http://www.zhangxinxu.com/GitHub/demo-Snap.svg/demo/basic/" target="_blank" rel="external">Snap.svg API中文文档</a>。</p>
+<h3 id="Raphael">Raphael</h3><p>Raphael 是另一个可选择的 SVG 库。</p>
+<p><img src="http://7tt058.com1.z0.glb.clouddn.com/svg-raphael.jpg" alt="Raphael.js"></p>
+<p>可以这么理解 Raphael ，它和 Snap.svg 是同一个作者写的，只是兼容性降低到了 IE6，同时做的兼容性工作导致文件也比较大，<strong>未压缩版本 299Kb，压缩版本也有 91Kb</strong>。使用时需要特别注意。</p>
+<p><a href="http://raphaeljs.com" target="_blank" rel="external">Raphael</a>的相关 API 可以参考这里：<a href="http://raphaeljs.com/reference.html" target="_blank" rel="external">Raphael 文档参考</a>。</p>
+<h2 id="实例">实例</h2><p>针对上一篇文章中的圆形进度条，这里做了一个 Snap.js 版本的 Demo:</p>
+<iframe height="268" scrolling="no" src="//codepen.io/reygreen1/embed/xwOdPb/?height=268&theme-id=18663&default-tab=result" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">See the Pen <a href="http://codepen.io/reygreen1/pen/xwOdPb/" target="_blank" rel="external">svg circle progress</a> by reygreen1 (<a href="http://codepen.io/reygreen1" target="_blank" rel="external">@reygreen1</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.<br></iframe>
+
+<p>可参考相关源码，用后感觉确实非常简单方便，需要兼容低版本浏览器的可以参考修改为 Raphael 的版本，这里不再赘述。</p>
+<h2 id="参考">参考</h2><ol>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/SVG" target="_blank" rel="external">SVG</a></li>
+<li><a href="http://baike.baidu.com/subview/85022/9539763.htm?fromtitle=%40%23Protect%40%23" target="_blank" rel="external">SVG （可缩放矢量图形）</a></li>
+<li><a href="http://www.zhihu.com/question/19690014" target="_blank" rel="external">SVG 与 HTML5 的 canvas 各有什么优点，哪个更有前途？</a></li>
+<li><a href="http://segmentfault.com/a/1190000000490137" target="_blank" rel="external">HTML5之图形绘制技术（Canvas Vs SVG）</a></li>
+<li><a href="http://www.oxxostudio.tw/articles/201406/svg-04-path-1.html" target="_blank" rel="external">SVG 研究之路 (4) - Path 基礎篇</a></li>
+<li><a href="http://www.zhangxinxu.com/wordpress/2014/01/snap-svg-study-demo-docs/" target="_blank" rel="external">Snap.svg-SVG实战学习必修课-实例与文档讲解</a></li>
+<li><a href="http://xbingoz.com/320.html" target="_blank" rel="external">【MDN】SVG教程(5) 路径 [译]</a></li>
+<li><a href="http://www.zhangxinxu.com/wordpress/2013/09/svg-fallbacks/" target="_blank" rel="external">一些SVG向下兼容优雅降级技术</a></li>
+</ol>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/SVG/">SVG</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/SVG/">SVG</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/09/22/svg-introduction/" data-title="SVG 入门指南" data-url="http://reygreen1.github.io/2015/09/22/svg-introduction/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"curry2015"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+	<!-- 多说公共JS代码 end -->
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">guorui</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+  
+   |
+  Modified by <a href="/">guorui</a>
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="http://s7.qhimg.com/lib/jquery/1102.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'curry2015' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

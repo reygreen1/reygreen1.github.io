@@ -1,0 +1,272 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>[译]WebGL 基础系列：WebGL 工作机制 | Rey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="guorui">
+  
+  
+    <meta name="description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
+
+This is a continuation from WebGL Fundamentals.Before we continue I think we need to discuss at abasic level what WebGL and you">
+  
+  <meta name="description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
+
+This is a continuation from WebGL Fundamentals.Before we continue I think we need to discuss at abasic level what WebGL and you">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译]WebGL 基础系列：WebGL 工作机制">
+<meta property="og:url" content="http://reygreen1.github.io/2015/10/25/webgl-how-it-works/index.html">
+<meta property="og:site_name" content="Rey's Blog">
+<meta property="og:description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
+
+This is a continuation from WebGL Fundamentals.Before we continue I think we need to discuss at abasic level what WebGL and you">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/webgl-fixed-unctionality.gif">
+<meta property="og:image" content="http://webglfundamentals.org/webgl/lessons/resources/vertex-shader-anim.gif">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译]WebGL 基础系列：WebGL 工作机制">
+<meta name="twitter:description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html
+
+This is a continuation from WebGL Fundamentals.Before we continue I think we need to discuss at abasic level what WebGL and you">
+  
+    <link rel="alternate" href="/atom.xml" title="Rey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="http://s0.qhimg.com/static/79ec3f5e5536f764/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Rey&#39;s Blog</a></h1>
+    <p><a href="/">&lt;!-- A site to show something about myself --&gt;</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/10/25/webgl-how-it-works/">
+  <time datetime="2015-10-24T16:00:00.000Z">
+    2015-10-25
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">[译]WebGL 基础系列：WebGL 工作机制</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>原文地址：<a href="http://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html" target="_blank" rel="external">http://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html</a></p>
+<p><img src="http://7tt058.com1.z0.glb.clouddn.com/webgl-fixed-unctionality.gif" alt="webgl 流水线"></p>
+<p>This is a continuation from <a href="webgl-fundamentals.html">WebGL Fundamentals</a>.<br>Before we continue I think we need to discuss at a<br>basic level what WebGL and your GPU actually do.  There are basically 2<br>parts to this GPU thing.  The first part processes vertices (or streams of<br>data) into clipspace vertices.  The second part draws pixels based on the<br>first part.</p>
+<p>本文是上一章节<a href="http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html" target="_blank" rel="external">WebGL 基本原理</a>内容的延续。开始之前，我认为我们应该先理解 WebGL 和 GPU 在底层上的工作机制。GPU 其实主要处理两方面的事情，首先把顶点信息（或数据流）处理成 WebGL 空间中的顶点，然后再次基础上，逐像素绘制图形。</p>
+<a id="more"></a>
+<p>When you call</p>
+<p>当我们调用下面的命令时</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gl.drawArrays(gl.TRIANGLE, 0, 9);</span><br></pre></td></tr></table></figure>
+<p>The 9 there means “process 9 vertices” so here are 9 vertices being processed.</p>
+<p>参数中的9表示我们接下来需要处理9个顶点信息</p>
+<p><img src="http://webglfundamentals.org/webgl/lessons/resources/vertex-shader-anim.gif" alt="处理过程"></p>
+<p>On the left is the data you provide.  The vertex shader is a function you<br>write in <a href="webgl-shaders-and-glsl.html">GLSL</a>.  It gets called once for each vertex.<br>You do some math and set the special variable <code>gl_Position</code> with a clipspace value<br>for the current vertex. The GPU takes that value and stores it internally.</p>
+<p>左边是我们提供的顶点数据，中间是我们着色器代码，它是用<a href="http://webglfundamentals.org/webgl/lessons/webgl-shaders-and-glsl.html" target="_blank" rel="external">GLSL</a>编写的函数。每个顶点都会调用一次顶点着色器，这里需要对当前的顶点做些运算，从而转换成 WebGL 空间数据提供给 <code>gl_Position</code> 变量。GPU 会使用这些数据并在内部存储起来。</p>
+<p>Assuming you’re drawing <code>TRIANGLES</code>, every time this first part generates 3<br>vertices the GPU uses them to make a triangle.  It figures out which<br>pixels the 3 points of the triangle correspond to, and then rasterizes the<br>triangle which is a fancy word for “draws it with pixels”.  For each<br>pixel it will call your fragment shader asking you what color to make that<br>pixel. Your fragment shader has to set a special variable <code>gl_FragColor</code><br>with the color it wants for that pixel.</p>
+<p>假设现在需要绘制 <code>三角形</code>，那么 GPU 会在第一个步骤中通过3个顶点来确定三角形的位置。然后，GPU 可以知道哪些像素是属于该三角形的，最后逐像素绘制三角形，我们称之为光栅化。针对每一个像素点，它都需要调用片元着色器来获取当前需要绘制的颜色值。片元着色器需要把像素上的颜色值设置到 <code>gl_FragColor</code> 变量中。</p>
+<p>That’s all very interesting but as you can see in our examples to up<br>this point the fragment shader has very little info per pixel.<br>Fortunately we can pass it more info.  We define “varyings” for each<br>value we want to pass from the vertex shader to the fragment shader.</p>
+<p>这就是全部有趣的地方，但是从例子中可以看到，我们当前在片元着色器上放置的像素信息还非常少。在后续的内容中，我们会给它提供更多的信息。如果需要从顶点着色器向片元着色器传递数据，那么我们需要为传递的每一个值设定 varying 变量。</p>
+<p>As a simple example, let’s just pass the clipspace coordinates we computed<br>directly from the vertex shader to the fragment shader.</p>
+<p>在当前这个简单的示例中，我们只需要从顶点着色器向片元着色器传递计算好的空间坐标数据。</p>
+<p>We’ll draw with a simple triangle.  Continuing from our<br><a href="webgl-2d-matrices.html">previous example</a> let’s change our F to a<br>triangle.</p>
+<p>我们先来绘制一个简单的三角形。示例代码来自于<a href="http://webglfundamentals.org/webgl/lessons/webgl-2d-matrices.html" target="_blank" rel="external">前一个例子</a>。我们稍微做下调整，将 F 修改为三角形。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将三角形相关数据传递给缓冲对象</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setGeometry</span><span class="params">(gl)</span> </span>&#123;</span><br><span class="line">  gl.bufferData(</span><br><span class="line">      gl.ARRAY_BUFFER,</span><br><span class="line">      <span class="keyword">new</span> <span class="built_in">Float32Array</span>([</span><br><span class="line">             <span class="number">0</span>, -<span class="number">100</span>,</span><br><span class="line">           <span class="number">150</span>,  <span class="number">125</span>,</span><br><span class="line">          -<span class="number">175</span>,  <span class="number">100</span>]),</span><br><span class="line">      gl.STATIC_DRAW);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>And we have to only draw 3 vertices.</p>
+<p>然后，我们只需要绘制3个顶点。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 绘制场景</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawScene</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 绘制几何图形</span></span><br><span class="line">  gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Then in our vertex shader we declare a <em>varying</em> to pass data to the<br>fragment shader.</p>
+<p>在顶点着色器中，我们需要声明一个 <em>varying</em> 变量来将数据传递给片元着色器。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">varying vec4 v_color;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// 通过矩阵生成多个位置数据</span></span><br><span class="line">  gl_Position = vec4((u_matrix * vec3(a_position, <span class="number">1</span>)).xy, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 坐标信息转换成颜色值</span></span><br><span class="line">  <span class="comment">// 坐标范围 [-1.0, 1.0]</span></span><br><span class="line">  <span class="comment">// 颜色值范围 [0.0, 1.0]</span></span><br><span class="line">   v_color = gl_Position * <span class="number">0.5</span> + <span class="number">0.5</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>And then we declare the same <em>varying</em> in the fragment shader.</p>
+<p>然后，我们在片元着色器中声明一个同名的 <em>varying</em> 变量。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">precision mediump float;</span><br><span class="line"></span><br><span class="line">varying vec4 v_color;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">   gl_FragColor = v_color;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>WebGL will connect the varying in the vertex shader to the varying of the<br>same name and type in the fragment shader.</p>
+<p>WebGL 会将顶点着色器和片元着色器中的同名 varying 变量连接起来，这样他们的信息就“同步”了。</p>
+<blockquote>
+<p>译者注：这里的“同步”并不是直接传值，这其中发生了光栅化的过程，根据绘制的图形，对顶点着色器中的 varying 变量进行内插，然后再传递给片元着色器中的 varying 变量。</p>
+</blockquote>
+<p>Here’s the working version.</p>
+<p>下面是一个可执行的代码版本。</p>
+<iframe class="webgl_example" style="width: 400px; height: 300px;" src="http://webglfundamentals.org/webgl/webgl-2d-triangle-with-position-for-color.html"></iframe>
+
+<p>Move, scale and rotate the rectangle.  Notice that since the colors are<br>computed from clipspace they don’t move with the rectangle.  They are<br>relative to the background.</p>
+<p>自己试试移动、缩放和旋转下那个三角形。你可能会注意到，三角形的颜色并不会跟随三角形一起移动。这是因为，颜色值是根据像素的坐标位置计算而来，它们只跟背景位置相关联。</p>
+<p>Now think about it.  We only compute 3 vertices.  Our vertex shader only<br>gets called 3 times therefore it’s only computing 3 colors yet our<br>triangle is many colors.  This is why it’s called a <em>varying</em>.</p>
+<p>现在我们在这里思考下。我们只计算了3个顶点，顶点着色器也只被调用了3次，因此只能计算3个颜色值，但是三角形内部有非常多的颜色，它们是如何计算出来的呢？这就是我们使用 <em>varying</em> 变量的原因。</p>
+<p>WebGL takes the 3 values we computed for each vertex and as it rasterizes<br>the triangle it interpolates between the values we computed for the<br>vertices.  For each pixel it calls our fragment shader with the<br>interpolated value for that pixel.</p>
+<p>WebGL 首先会使用我们计算好的3个顶点数据，然后在对三角形进行光栅化的时候，它会使用内插的方法来计算内部各个像素上的值。</p>
+<p>In the example above we start out with the 3 vertices</p>
+<p>在上面的例子中，我们开始有3个顶点值。</p>
+<p>| Vertices |<br>| 0 | -100 |<br>| 150 | 125 |<br>| -175 | 100 |</p>
+<p>Our vertex shader applies a matrix to translate, rotate, scale and convert<br>to clipspace.  The defaults for translation, rotation and scale are<br>translation = 200, 150, rotation = 0, scale = 1,1 so that’s really only<br>translation.  Given our backbuffer is 400x300 our vertex shader applies<br>the matrix and then computes the following 3 clipspace vertices.</p>
+<p>顶点着色器使用矩阵来实现变换、旋转、缩放和坐标转换等操作。这里变换、旋转和缩放的默认值分别为 translation = 200, 150、rotation = 0、scale = 1,1 所以这里只看到了转换的效果。把绘图背景大小设置为 400x300，顶点着色器会使用矩阵来计算得出下面的3个空间坐标。</p>
+<p>| values written to gl_Position |<br>| 0.000 | 0.660 |<br>| 0.750 | -0.830 |<br>| -0.875 | -0.660 |</p>
+<p>It also converts those to colorspace and writes them to the <em>varying</em> v_color that we declared.</p>
+<p>同时，也会将这些值转换成相应的颜色值，并将它们写入我们已经声明的<em>varying</em> v_color 变量。</p>
+<p>| values written to v_color |<br>| 0.5000 | 0.750 | 0.5 |<br>| 0.8750 | 0.915 | 0.5 |<br>| 0.0625 | 0.170 | 0.5 |</p>
+<p>Those 3 values written to v_color are then interpolated and passed to the<br>fragment shader for each pixel.</p>
+<p>这3个被写入 v_color 的值会在经过内插的过程后传递给片元着色器，片元着色器因此可以恰当的得到图形上其他像素的颜色值。</p>
+<iframe class="webgl_example" style="width: 400px; height: 300px;" src="http://webglfundamentals.org/webgl/lessons/resources/fragment-shader-anim.html"></iframe>
+
+<p>We can also pass in more data to the vertex shader which we can then pass<br>on to the fragment shader.  So for example let’s draw a rectangle, that<br>consists of 2 triangles, in 2 colors.  To do this we’ll add another<br>attribute to the vertex shader so we can pass it more data and we’ll pass<br>that data directly to the fragment shader.</p>
+<p>我们可以给顶点着色器传递更多的数据，以便于片元着色器可以使用这些数据。所以下面的例子，我们就来绘制一个矩形，它包含了两个不同颜色的三角形。为了达到这个目的，我们需要给顶点着色器添加一个 attribute 变量，这样片元着色器可以使用这些数据进行后续处理。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">attribute vec2 a_position;</span><br><span class="line">attribute vec4 a_color;</span><br><span class="line">...</span><br><span class="line">varying vec4 v_color;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">   ...</span><br><span class="line">  <span class="comment">// 复制属性值到 varying 变量</span></span><br><span class="line">   v_color = a_color;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>We now have to supply colors for WebGL to use.</p>
+<p>现在可以提供颜色值给 WebGL 使用了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">// 获取存储位置</span></span><br><span class="line">  <span class="keyword">var</span> positionLocation = gl.getAttribLocation(program, <span class="string">"a_position"</span>);</span><br><span class="line">  <span class="keyword">var</span> colorLocation = gl.getAttribLocation(program, <span class="string">"a_color"</span>);</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 创建缓冲区对象</span></span><br><span class="line">  <span class="keyword">var</span> buffer = gl.createBuffer();</span><br><span class="line">  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);</span><br><span class="line">  gl.enableVertexAttribArray(colorLocation);</span><br><span class="line">  gl.vertexAttribPointer(colorLocation, <span class="number">4</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 设置颜色</span></span><br><span class="line">  setColors(gl);</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置两个三角形的颜色</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setColors</span><span class="params">(gl)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Pick 2 random colors.</span></span><br><span class="line">  <span class="keyword">var</span> r1 = <span class="built_in">Math</span>.random();</span><br><span class="line">  <span class="keyword">var</span> b1 = <span class="built_in">Math</span>.random();</span><br><span class="line">  <span class="keyword">var</span> g1 = <span class="built_in">Math</span>.random();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> r2 = <span class="built_in">Math</span>.random();</span><br><span class="line">  <span class="keyword">var</span> b2 = <span class="built_in">Math</span>.random();</span><br><span class="line">  <span class="keyword">var</span> g2 = <span class="built_in">Math</span>.random();</span><br><span class="line"></span><br><span class="line">  gl.bufferData(</span><br><span class="line">      gl.ARRAY_BUFFER,</span><br><span class="line">      <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">        [ r1, b1, g1, <span class="number">1</span>,</span><br><span class="line">          r1, b1, g1, <span class="number">1</span>,</span><br><span class="line">          r1, b1, g1, <span class="number">1</span>,</span><br><span class="line">          r2, b2, g2, <span class="number">1</span>,</span><br><span class="line">          r2, b2, g2, <span class="number">1</span>,</span><br><span class="line">          r2, b2, g2, <span class="number">1</span>]),</span><br><span class="line">      gl.STATIC_DRAW);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>And here’s the result.</p>
+<p>下面就是最终的效果。</p>
+<iframe class="webgl_example" style="width: 400px; height: 300px;" src="http://webglfundamentals.org/webgl/webgl-2d-rectangle-with-2-colors.html"></iframe>
+
+<p>Notice that we have 2 solid color triangles.  Yet we’re passing the values<br>in a <em>varying</em> so they are being varied or interpolated across the<br>triangle.  It’s just that we used the same color on each of the 3 vertices<br>of each triangle.  If we make each color different we’ll see the<br>interpolation.</p>
+<p>注意，现在我们有了2个纯色三角形。我们使用 <em>varying</em> 变量来设置相关值，这样它们可以方便的在三角形内部做内插。上面的例子中，三角形的3个顶点使用了相同的颜色，所以显示的是纯色的三角形。如果我们设置不同的颜色值，那么可以通过下面的代码来观察不同的效果。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置2个三角形的颜色</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setColors</span><span class="params">(gl)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 每个顶点设置不同颜色</span></span><br><span class="line">  gl.bufferData(</span><br><span class="line">      gl.ARRAY_BUFFER,</span><br><span class="line">      <span class="keyword">new</span> <span class="built_in">Float32Array</span>(</span><br><span class="line">         [ <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="number">1</span>,</span><br><span class="line">           <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="number">1</span>,</span><br><span class="line">           <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="number">1</span>,</span><br><span class="line">           <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="number">1</span>,</span><br><span class="line">           <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="number">1</span>,</span><br><span class="line">           <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="number">1</span>]),</span><br><span class="line">      gl.STATIC_DRAW);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>And now we see the interpolated <em>varying</em>.</p>
+<p>现在我们可以看到变化后的 <em>varying</em> 效果了。</p>
+<iframe class="webgl_example" style="width: 400px; height: 300px;" src="http://webglfundamentals.org/webgl/webgl-2d-rectangle-with-random-colors.html"></iframe>
+
+<p>Not very exciting I suppose but it does demonstrate using more than one<br>attribute and passing data from a vertex shader to a fragment shader.  If<br>you check out <a href="http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html" target="_blank" rel="external">the image processing examples</a><br>you’ll see they also use an extra attribute to pass in texture coordinates.</p>
+<p>我猜这可能不是那么有趣，但是这至少证明了可以从顶点着色器向片元着色器传递多个属性数据。如果你看过<a href="http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html" target="_blank" rel="external">图片处理的例子</a>，你就会发现那些例子其实也是使用额外的属性来传入纹理坐标的。</p>
+<h2 id="What_do_these_buffer_and_attibute_commands_do?">What do these buffer and attibute commands do?</h2><h2 id="上面这些缓冲和属性命令的作用是什么？">上面这些缓冲和属性命令的作用是什么？</h2><p>Buffers are the way of getting vertex and other per vertex data onto the<br>GPU.  <code>gl.createBuffer</code> creates a buffer.<br><code>gl.bindBuffer</code> sets that buffer as the buffer to be worked on.<br><code>gl.bufferData</code> copies data into the buffer.</p>
+<p>缓冲去对象用来存储顶点和相关数据。<code>gl.createBuffer</code> 方法用来创建缓冲区对象。<code>gl.bindBuffer</code> 设置缓冲区对象为工作对象。<code>gl.bufferData</code> 将数据放入缓冲区对象。</p>
+<p>Once the data is in the buffer we need to tell WebGL how to get data out<br>of it and provide it to the vertex shader’s attributes.</p>
+<p>当缓冲区对象中存入数据后，我们需要告诉 WebGL 获取数据并把这些数据提供给顶点着色器的属性。</p>
+<p>To do this, first we ask WebGL what locations it assigned to the<br>attributes.  For example in the code above we have</p>
+<p>为了做到这点，我们首先需要获取到 WebGL 分配给这些属性的地址。拿上面的代码举例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// look up where the vertex data needs to go.</span></span><br><span class="line"><span class="keyword">var</span> positionLocation = gl.getAttribLocation(program, <span class="string">"a_position"</span>);</span><br><span class="line"><span class="keyword">var</span> colorLocation = gl.getAttribLocation(program, <span class="string">"a_color"</span>);</span><br></pre></td></tr></table></figure>
+<p>Once we know the location of the attribute we then issue 2 commands.</p>
+<p>一旦我们知道属性的地址就可以执行下面2个命令。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gl.enableVertexAttribArray(location);</span><br></pre></td></tr></table></figure>
+<p>This command tells WebGL we want to supply data from a buffer.</p>
+<p>这条命令告诉 WebGL 我们相处缓冲对象中获取数据。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">gl.vertexAttribPointer(</span><br><span class="line">    location,</span><br><span class="line">    numComponents,</span><br><span class="line">    typeOfData,</span><br><span class="line">    normalizeFlag,</span><br><span class="line">    strideToNextPieceOfData,</span><br><span class="line">    offsetIntoBuffer);</span><br></pre></td></tr></table></figure>
+<p>And this command tells WebGL to get data from the buffer that was last<br>bound with gl.bindBuffer, how many components per vertex (1 - 4), what the<br>type of data is (<code>BYTE</code>, <code>FLOAT</code>, <code>INT</code>, <code>UNSIGNED_SHORT</code>, etc…), the stride<br>which means how many bytes to skip to get from one piece of data to the<br>next piece of data, and an offset for how far into the buffer our data is.</p>
+<p>这条命令告诉 WebGL 从缓冲区对象中将数据分配出去。numComponents 指定缓冲区中每个顶点的分量个数（1到4）。typeOfData 表示数据格式(<code>BYTE</code>, <code>FLOAT</code>, <code>INT</code>, <code>UNSIGNED_SHORT</code>等)。strideToNextPieceOfData 表示相邻两个顶点间的字节数。offsetIntoBuffer 指定缓冲区对象中的偏移量。</p>
+<p>Number of components is always 1 to 4.</p>
+<p>再次提醒下，缓冲区中的分量个数范围为 1 到 4。</p>
+<p>If you are using 1 buffer per type of data then both stride and offset can<br>always be 0.  0 for stride means “use a stride that matches the type and<br>size”.  0 for offset means start at the beginning of the buffer.  Setting<br>them to values other than 0 is more complicated and though it has some<br>benefits in terms of performance it’s not worth the complication unless<br>you are trying to push WebGL to its absolute limits.</p>
+<p>如果每中类型的数据只使用了一个缓冲区对象，那么 stride 和 offset 都为 0。0对于 stride 意味着“使用符合类型大小的 stride”。0对于 offset 意味着起点在缓冲开始位置。如果设置为其他非0值，可能会让情况变得复杂，但是一般这么做是处于性能优化的目的。一般情况下，这种做法是值得尝试的。</p>
+<p>I hope that clears up buffers and attributes.</p>
+<p>最后记得清理缓冲和属性值。</p>
+<p>Next let’s go over <a href="http://webglfundamentals.org/webgl/lessons/webgl-shaders-and-glsl.html" target="_blank" rel="external">shaders and GLSL</a>.</p>
+<p>下一章节，我们将会学习<a href="http://webglfundamentals.org/webgl/lessons/webgl-shaders-and-glsl.html" target="_blank" rel="external">着色器和 GLSL</a>。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/webgl/">webgl</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/webgl/">webgl</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/10/25/webgl-how-it-works/" data-title="[译]WebGL 基础系列：WebGL 工作机制" data-url="http://reygreen1.github.io/2015/10/25/webgl-how-it-works/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"curry2015"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+	<!-- 多说公共JS代码 end -->
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">guorui</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+  
+   |
+  Modified by <a href="/">guorui</a>
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="http://s7.qhimg.com/lib/jquery/1102.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'curry2015' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

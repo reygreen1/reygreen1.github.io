@@ -12,9 +12,11 @@
   
     <meta name="description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html
 
+
 WebGL makes it possible to display amazing realtime 3D graphics in yourbrowser but what many people don’t know is thatWebGL is">
   
   <meta name="description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html
+
 
 WebGL makes it possible to display amazing realtime 3D graphics in yourbrowser but what many people don’t know is thatWebGL is">
 <meta property="og:type" content="article">
@@ -23,11 +25,13 @@ WebGL makes it possible to display amazing realtime 3D graphics in yourbrowser b
 <meta property="og:site_name" content="Rey's Blog">
 <meta property="og:description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html
 
+
 WebGL makes it possible to display amazing realtime 3D graphics in yourbrowser but what many people don’t know is thatWebGL is">
 <meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/webgl-fundation.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[译]WebGL 基础系列：WebGL 基本原理">
 <meta name="twitter:description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html
+
 
 WebGL makes it possible to display amazing realtime 3D graphics in yourbrowser but what many people don’t know is thatWebGL is">
   
@@ -84,74 +88,120 @@ WebGL makes it possible to display amazing realtime 3D graphics in yourbrowser b
     
       <p>原文地址：<a href="http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html" target="_blank" rel="external">http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html</a></p>
 <p><img src="http://7tt058.com1.z0.glb.clouddn.com/webgl-fundation.jpg" alt="WebGL 架构"></p>
+<blockquote>
 <p>WebGL makes it possible to display amazing realtime 3D graphics in your<br>browser but what many people don’t know is that<br><a href="webgl-2d-vs-3d-library.html">WebGL is actually a rasterization API, not a 3D API</a>.</p>
+</blockquote>
 <p>WebGL 让你在浏览器中可以渲染出令人惊叹的 3D 图形效果，但是大多数人都不知道<a href="http://webglfundamentals.org/webgl/lessons/webgl-2d-vs-3d-library.html" target="_blank" rel="external">WebGL 其实只是光栅化 API ，而不是 3D API</a>。</p>
+<blockquote>
 <p>Let me explain.</p>
+</blockquote>
 <p>下面我来详细解释下。</p>
 <a id="more"></a>
+<blockquote>
 <p>WebGL only cares about 2 things. Clipspace coordinates and colors.<br>Your job as a programmer using WebGL is to provide WebGL with those 2 things.<br>You provide 2 “shaders” to do this. A Vertex shader which provides the<br>clipspace coordinates and a fragment shader that provides the color.</p>
+</blockquote>
 <p>WebGL 只关心2件事情：空间坐标和颜色。作为 WebGL 的开发者，你的工作就是把这2个信息提供给 WebGL。具体做法就是使用2种着色器：顶点着色器和片元着色器。顶点着色器包含了空间坐标信息，片元着色器包含了颜色信息。</p>
+<blockquote>
 <p>Clipspace coordinates always go from -1 to +1 no matter what size your<br>canvas is. Here is a simple WebGL example that shows WebGL in its simplest form.</p>
+</blockquote>
 <p>需要注意，在 WebGL 中，无论 canvas 有多大，空间坐标系的坐标范围都是[-1, 1]。<br>下面的代码是一个简单的例子，展示了 WebGL 编程的基本流程。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取 WebGL 上下文</span></span><br><span class="line"><span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">"canvas"</span>);</span><br><span class="line"><span class="keyword">var</span> gl = canvas.getContext(<span class="string">"experimental-webgl"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置 GLSL 程序</span></span><br><span class="line"><span class="keyword">var</span> program = createProgramFromScripts(gl, [<span class="string">"2d-vertex-shader"</span>, <span class="string">"2d-fragment-shader"</span>]);</span><br><span class="line">gl.useProgram(program);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 绑定顶点数据</span></span><br><span class="line"><span class="keyword">var</span> positionLocation = gl.getAttribLocation(program, <span class="string">"a_position"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建缓存对象，并把矩形的顶点坐标放入缓存对象</span></span><br><span class="line"><span class="keyword">var</span> buffer = gl.createBuffer();</span><br><span class="line">gl.bindBuffer(gl.ARRAY_BUFFER, buffer);</span><br><span class="line">gl.bufferData(</span><br><span class="line">    gl.ARRAY_BUFFER,</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Float32Array</span>([</span><br><span class="line">        -<span class="number">1.0</span>, -<span class="number">1.0</span>,</span><br><span class="line">         <span class="number">1.0</span>, -<span class="number">1.0</span>,</span><br><span class="line">        -<span class="number">1.0</span>,  <span class="number">1.0</span>,</span><br><span class="line">        -<span class="number">1.0</span>,  <span class="number">1.0</span>,</span><br><span class="line">         <span class="number">1.0</span>, -<span class="number">1.0</span>,</span><br><span class="line">         <span class="number">1.0</span>,  <span class="number">1.0</span>]),</span><br><span class="line">    gl.STATIC_DRAW);</span><br><span class="line">gl.enableVertexAttribArray(positionLocation);</span><br><span class="line">gl.vertexAttribPointer(positionLocation, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 绘制图形</span></span><br><span class="line">gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, <span class="number">6</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
 <p>Here’s the 2 shaders</p>
+</blockquote>
 <p>着色器代码：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;script id="2d-vertex-shader" type="x-shader/x-vertex"&gt;</span><br><span class="line">attribute vec2 a_position;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  gl_Position = vec4(a_position, 0, 1);</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;script id="2d-fragment-shader" type="x-shader/x-fragment"&gt;</span><br><span class="line">void main() &#123;</span><br><span class="line">  gl_FragColor = vec4(0, 1, 0, 1);  // green</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
 <p>This will draw a green rectangle the entire size of the canvas. Here it is</p>
+</blockquote>
 <p>上面的代码会在 canvas 上画一个绿色的矩形。示例如下：</p>
 <iframe class="webgl_example" style="width: 400px; height: 300px;" src="http://webglfundamentals.org/webgl/webgl-fundamentals.html"></iframe>
 
+<blockquote>
 <p>Not very exciting :-p</p>
+</blockquote>
 <p>看起来似乎并不是很令人兴奋。</p>
+<blockquote>
 <p>Again, clipspace coordinates always go from -1 to +1 regardless of the<br>size of the canvas. In the case above you can see we are doing nothing<br>but passing on our position data directly. Since the position data is<br>already in clipspace there is no work to do. <em>If you want 3D it’s up to you<br>to supply shaders that convert from 3D to clipspace because WebGL is only<br>a rasterization API</em>.</p>
+</blockquote>
 <p>再次提醒下，空间坐标范围永远都是[-1, 1]，而不受 canvas 大小影响。从上面的例子看出，我们其实没做任何事情，只是把位置数据传递了过去。这是因为这些位置数据已经是符合要求的坐标数据。<em>如果你想实现 3D 效果，那么你需要将 3D 数据转换为 WebGL 坐标数据给着色器，因为 WebGL 只是光栅化 API</em>。</p>
+<blockquote>
 <p>For 2D stuff you would probably rather work in pixels than clipspace so<br>let’s change the shader so we can supply rectangles in pixels and have<br>it convert to clipspace for us. Here’s the new vertex shader</p>
+</blockquote>
 <p>对于 2D 开发者，更多时间会同像素打交道而非这里的空间坐标。因此，我们这里需要修改下着色器，当我们传递的是像素信息时，它能自动为我们转换成合适的空间坐标。下面是新的顶点着色器：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;script id=<span class="string">"2d-vertex-shader"</span> type=<span class="string">"x-shader/x-vertex"</span>&gt;</span><br><span class="line">attribute vec2 a_position;</span><br><span class="line"></span><br><span class="line">uniform vec2 u_resolution;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">   <span class="comment">// convert the rectangle from pixels to 0.0 to 1.0</span></span><br><span class="line">   vec2 zeroToOne = a_position / u_resolution;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// convert from 0-&gt;1 to 0-&gt;2</span></span><br><span class="line">   vec2 zeroToTwo = zeroToOne * <span class="number">2.0</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// convert from 0-&gt;2 to -1-&gt;+1 (clipspace)</span></span><br><span class="line">   vec2 clipSpace = zeroToTwo - <span class="number">1.0</span>;</span><br><span class="line"></span><br><span class="line">   gl_Position = vec4(clipSpace, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
 <p>Now we can change our data from clipspace to pixels</p>
+</blockquote>
 <p>现在我们可以把数据直接从空间坐标修改为像素值了。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// set the resolution</span></span><br><span class="line"><span class="keyword">var</span> resolutionLocation = gl.getUniformLocation(program, <span class="string">"u_resolution"</span>);</span><br><span class="line">gl.uniform2f(resolutionLocation, canvas.width, canvas.height);</span><br><span class="line"></span><br><span class="line"><span class="comment">// setup a rectangle from 10,20 to 80,30 in pixels</span></span><br><span class="line">gl.bufferData(gl.ARRAY_BUFFER, <span class="keyword">new</span> <span class="built_in">Float32Array</span>([</span><br><span class="line">    <span class="number">10</span>, <span class="number">20</span>,</span><br><span class="line">    <span class="number">80</span>, <span class="number">20</span>,</span><br><span class="line">    <span class="number">10</span>, <span class="number">30</span>,</span><br><span class="line">    <span class="number">10</span>, <span class="number">30</span>,</span><br><span class="line">    <span class="number">80</span>, <span class="number">20</span>,</span><br><span class="line">    <span class="number">80</span>, <span class="number">30</span>]), gl.STATIC_DRAW);</span><br></pre></td></tr></table></figure>
+<blockquote>
 <p>And here it is</p>
+</blockquote>
 <p>示例如下：</p>
 <iframe class="webgl_example" style="width: 400px; height: 300px;" src="http://webglfundamentals.org/webgl/webgl-2d-rectangle.html"></iframe>
 
+<blockquote>
 <p>You might notice the rectangle is near the bottom of that area. WebGL considers the bottom left<br>corner to be 0,0. To get it to be the more traditional top left corner used for 2d graphics APIs<br>we just flip the y coordinate.</p>
+</blockquote>
 <p>你可能已经注意到了矩形位于区域的左下角，WebGL 将左下角坐标设置为（0,0）。而在 2d 图形 API 中均把左上角看做原点。为了符合这样的习惯，我们只需翻转下 y 轴坐标即可。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gl_Position = vec4(clipSpace * vec2(<span class="number">1</span>, -<span class="number">1</span>), <span class="number">0</span>, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
 <p>And now our rectangle is where we expect it.</p>
+</blockquote>
 <p>现在矩形就显示在了我们期望的位置上。</p>
 <iframe class="webgl_example" style="width: 400px; height: 300px;" src="http://webglfundamentals.org/webgl/webgl-2d-rectangle-top-left.html"></iframe>
 
+<blockquote>
 <p>Let’s make the code that defines a rectangle into a function so<br>we can call it for different sized rectangles. While we’re at it<br>we’ll make the color settable.</p>
+</blockquote>
 <p>现在我们修改下代码，将定义矩形的代码放入函数，这样每次调用函数都可以得到不同大小的矩形。同时，我们用变量来存储颜色值。</p>
+<blockquote>
 <p>First we make the fragment shader take a color uniform input.</p>
+</blockquote>
 <p>首先，我们在片元着色器中设置一个 uniform 类型的变量来存储颜色值。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;script id=<span class="string">"2d-fragment-shader"</span> type=<span class="string">"x-shader/x-fragment"</span>&gt;</span><br><span class="line">precision mediump float;</span><br><span class="line"></span><br><span class="line">uniform vec4 u_color;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">    gl_FragColor = u_color;</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
 <p>And here’s the new code that draws 50 rectangles in random places and random colors.</p>
+</blockquote>
 <p>下面的新代码绘制了50个矩形，每个矩形都有随机的位置和颜色。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">var</span> colorLocation = gl.getUniformLocation(program, <span class="string">"u_color"</span>);</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 创建缓存对象</span></span><br><span class="line">  <span class="keyword">var</span> buffer = gl.createBuffer();</span><br><span class="line">  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);</span><br><span class="line">  gl.enableVertexAttribArray(positionLocation);</span><br><span class="line">  gl.vertexAttribPointer(positionLocation, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 绘制50个随机位置和颜色的矩形</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> ii = <span class="number">0</span>; ii &lt; <span class="number">50</span>; ++ii) &#123;</span><br><span class="line">    <span class="comment">// 随机产生一个位置</span></span><br><span class="line">    setRectangle(</span><br><span class="line">        gl, randomInt(<span class="number">300</span>), randomInt(<span class="number">300</span>), randomInt(<span class="number">300</span>), randomInt(<span class="number">300</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 随机产生一个颜色</span></span><br><span class="line">    gl.uniform4f(colorLocation, <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="built_in">Math</span>.random(), <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 绘制矩形</span></span><br><span class="line">    gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, <span class="number">6</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 随机返回0或-1</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">randomInt</span><span class="params">(range)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * range);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将一个矩形的相关信息放入缓存对象</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setRectangle</span><span class="params">(gl, x, y, width, height)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> x1 = x;</span><br><span class="line">  <span class="keyword">var</span> x2 = x + width;</span><br><span class="line">  <span class="keyword">var</span> y1 = y;</span><br><span class="line">  <span class="keyword">var</span> y2 = y + height;</span><br><span class="line">  gl.bufferData(gl.ARRAY_BUFFER, <span class="keyword">new</span> <span class="built_in">Float32Array</span>([</span><br><span class="line">     x1, y1,</span><br><span class="line">     x2, y1,</span><br><span class="line">     x1, y2,</span><br><span class="line">     x1, y2,</span><br><span class="line">     x2, y1,</span><br><span class="line">     x2, y2]), gl.STATIC_DRAW);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
 <p>And here’s the rectangles.</p>
+</blockquote>
 <p>下面的示例展示了这些矩形效果：</p>
 <iframe class="webgl_example" style="width: 400px; height: 300px;" src="http://webglfundamentals.org/webgl/webgl-2d-rectangles.html"></iframe>
 
-<p>I hope you can see that WebGL is actually a pretty simple API.<br>While it can get more complicated to do 3D that complication is<br>added by you, the programmer, in the form of more complex shaders.<br>The WebGL API itself is 2D and fairly simple.</p>
-<p>我希望你能认识到，WebGL 本身的 API 非常简单。但当它处理 3D 效果时又变得非常复杂。这种复杂性完全是由开发者自己提升上去的，因为在开发过程中使用了很多复杂的着色器。WebGL API 本身是 2D 的，并且非常简单。</p>
-<p>If you’re 100% new to WebGL and have no idea what GLSL is or shaders or what the GPU does<br>then checkout <a href="webgl-how-it-works.html">the basics of how WebGL really works</a>.</p>
-<p>如果你完全不了解 WegGL，不知道 GLSL 和着色器，也不明白 GPU 是做什么的，那么你可以先去看看<a href="http://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html" target="_blank" rel="external">WebGL 工作的基本原理</a>。</p>
-<p>Otherwise from here you can go in 2 directions. If you are interested in image procesing<br>I’ll show you <a href="http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html" target="_blank" rel="external">how to do some 2D image processing</a>.<br>If you are interesting in learning about translation,<br>rotation and scale then <a href="http://webglfundamentals.org/webgl/lessons/webgl-2d-translation.html" target="_blank" rel="external">start here</a>.</p>
-<p>从这里开始，你有两个方向可以选择。如果你对图像处理感兴趣，可以先看看<a href="http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html" target="_blank" rel="external">如何处理 2D 图像</a>。如果你对学习变换、旋转和缩放感兴趣，那么可以看看<a href="http://webglfundamentals.org/webgl/lessons/webgl-2d-translation.html" target="_blank" rel="external">WebGL 2D 变换</a>。</p>
 <blockquote>
-<p>type=”x-shader/x-vertex” 和 type=”x-shader/x-fragment” 的作用是什么？</p>
-<p><script> tags default to having JavaScript in them. You can put no type or you can put type=”javascript” or type=”text/javascript” and the browser will interpret the contents as JavaScript. If you put anything else the browser ignores the contents of the script tag.</p>
-<p><code>&lt;script&gt;</code> 标签默认情况下里面包含了 JavaScript 代码。你可以通过设置 type 的值来让浏览器正确处理里面的 JavaScript 代码。如果你设置的是其他值，那么浏览器就会忽略处理标签内的内容。</p>
-<p>We can use this feature to store shaders in script tags. Even better, we can make up our own type and in our javascript look for that to decide whether to compile the shader as a vertex shader or a fragment shader.</p>
-<p>我们可以使用这个特性在 script 标签中存储着色器代码。甚至，我们还可以自定义 type 类型，从而告诉后续的编译器将着色器代码编译为顶点着色器还是片元着色器。</p>
-<p>In this case the function createProgramFromScripts looks for scripts with specified ids and then looks at the type to decide what type of shader to create.</p>
-<p>在上面的例子中，<code>createProgramFromScripts</code> 方法通过特殊id来查找 script 标签，然后根据 type 值来创建不同类型的着色器。</p>
-<p>createProgramFromScripts is part of some boilerplate like code that almost every WebGL program needs.</p>
-<p>所有 WebGL 程序需要 <code>createProgramFromScripts</code> 方法，可参考<a href="http://webglfundamentals.org/webgl/lessons/webgl-boilerplate.html">WebGL Boilerplate</a></p>
+<p>I hope you can see that WebGL is actually a pretty simple API.<br>While it can get more complicated to do 3D that complication is<br>added by you, the programmer, in the form of more complex shaders.<br>The WebGL API itself is 2D and fairly simple.</p>
 </blockquote>
-</script></p></blockquote>
+<p>我希望你能认识到，WebGL 本身的 API 非常简单。但当它处理 3D 效果时又变得非常复杂。这种复杂性完全是由开发者自己提升上去的，因为在开发过程中使用了很多复杂的着色器。WebGL API 本身是 2D 的，并且非常简单。</p>
+<blockquote>
+<p>If you’re 100% new to WebGL and have no idea what GLSL is or shaders or what the GPU does<br>then checkout <a href="webgl-how-it-works.html">the basics of how WebGL really works</a>.</p>
+</blockquote>
+<p>如果你完全不了解 WegGL，不知道 GLSL 和着色器，也不明白 GPU 是做什么的，那么你可以先去看看<a href="http://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html" target="_blank" rel="external">WebGL 工作的基本原理</a>。</p>
+<blockquote>
+<p>Otherwise from here you can go in 2 directions. If you are interested in image procesing<br>I’ll show you <a href="http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html" target="_blank" rel="external">how to do some 2D image processing</a>.<br>If you are interesting in learning about translation,<br>rotation and scale then <a href="http://webglfundamentals.org/webgl/lessons/webgl-2d-translation.html" target="_blank" rel="external">start here</a>.</p>
+</blockquote>
+<p>从这里开始，你有两个方向可以选择。如果你对图像处理感兴趣，可以先看看<a href="http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html" target="_blank" rel="external">如何处理 2D 图像</a>。如果你对学习变换、旋转和缩放感兴趣，那么可以看看<a href="http://webglfundamentals.org/webgl/lessons/webgl-2d-translation.html" target="_blank" rel="external">WebGL 2D 变换</a>。</p>
+<hr>
+<h3 id="type=”x-shader/x-vertex”_和_type=”x-shader/x-fragment”_的作用是什么？">type=”x-shader/x-vertex” 和 type=”x-shader/x-fragment” 的作用是什么？</h3><blockquote>
+<p><code>&lt;script&gt;</code> tags default to having JavaScript in them. You can put no type or you can put type=”javascript” or type=”text/javascript” and the browser will interpret the contents as JavaScript. If you put anything else the browser ignores the contents of the script tag.</p>
+</blockquote>
+<p><code>&lt;script&gt;</code> 标签默认情况下里面包含了 JavaScript 代码。你可以通过设置 type 的值来让浏览器正确处理里面的 JavaScript 代码。如果你设置的是其他值，那么浏览器就会忽略处理标签内的内容。</p>
+<blockquote>
+<p>We can use this feature to store shaders in script tags. Even better, we can make up our own type and in our javascript look for that to decide whether to compile the shader as a vertex shader or a fragment shader.</p>
+</blockquote>
+<p>我们可以使用这个特性在 script 标签中存储着色器代码。甚至，我们还可以自定义 type 类型，从而告诉后续的编译器将着色器代码编译为顶点着色器还是片元着色器。</p>
+<blockquote>
+<p>In this case the function createProgramFromScripts looks for scripts with specified ids and then looks at the type to decide what type of shader to create.</p>
+</blockquote>
+<p>在上面的例子中，<code>createProgramFromScripts</code> 方法通过特殊id来查找 script 标签，然后根据 type 值来创建不同类型的着色器。</p>
+<blockquote>
+<p>createProgramFromScripts is part of some boilerplate like code that almost every WebGL program needs.</p>
+</blockquote>
+<p>所有 WebGL 程序需要 <code>createProgramFromScripts</code> 方法，可参考<a href="http://webglfundamentals.org/webgl/lessons/webgl-boilerplate.html" target="_blank" rel="external">WebGL Boilerplate</a></p>
+
     
   </div>
   <footer>

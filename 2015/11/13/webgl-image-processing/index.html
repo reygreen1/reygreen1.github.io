@@ -1,0 +1,323 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>[译]WebGL 基础系列：图像处理 | Rey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="guorui">
+  
+  
+    <meta name="description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html
+
+
+Image processing is easy in WebGL. How easy? Read below.
+
+在 WebGL 中进行图像处理非常简单。有多简单？请接着往下看。
+
+This is a continuation from We">
+  
+  <meta name="description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html
+
+
+Image processing is easy in WebGL. How easy? Read below.
+
+在 WebGL 中进行图像处理非常简单。有多简单？请接着往下看。
+
+This is a continuation from We">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译]WebGL 基础系列：图像处理">
+<meta property="og:url" content="http://reygreen1.github.io/2015/11/13/webgl-image-processing/index.html">
+<meta property="og:site_name" content="Rey's Blog">
+<meta property="og:description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html
+
+
+Image processing is easy in WebGL. How easy? Read below.
+
+在 WebGL 中进行图像处理非常简单。有多简单？请接着往下看。
+
+This is a continuation from We">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/优胜美地.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译]WebGL 基础系列：图像处理">
+<meta name="twitter:description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html
+
+
+Image processing is easy in WebGL. How easy? Read below.
+
+在 WebGL 中进行图像处理非常简单。有多简单？请接着往下看。
+
+This is a continuation from We">
+  
+    <link rel="alternate" href="/atom.xml" title="Rey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="http://s0.qhimg.com/static/79ec3f5e5536f764/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Rey&#39;s Blog</a></h1>
+    <p><a href="/">&lt;!-- A site to show something about myself --&gt;</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/11/13/webgl-image-processing/">
+  <time datetime="2015-11-12T16:00:00.000Z">
+    2015-11-13
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">[译]WebGL 基础系列：图像处理</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>原文地址：<a href="http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html" target="_blank" rel="external">http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html</a></p>
+<p><img src="http://7tt058.com1.z0.glb.clouddn.com/优胜美地.jpg" alt="优胜美地"></p>
+<blockquote>
+<p>Image processing is easy in WebGL. How easy? Read below.</p>
+</blockquote>
+<p>在 WebGL 中进行图像处理非常简单。有多简单？请接着往下看。</p>
+<blockquote>
+<p>This is a continuation from <a href="http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html" target="_blank" rel="external">WebGL Fundamentals</a>. If you haven’t read that I’d suggest <a href="http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html" target="_blank" rel="external">webgl-fundamentals.html</a> going there first.</p>
+</blockquote>
+<p>本文接<a href="http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html" target="_blank" rel="external">WebGL 基本原理</a>的内容进行描述。如果还没有读过，那么你最好先去看下<a href="http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html" target="_blank" rel="external">WebGL 基本原理</a>相关内容。</p>
+<a id="more"></a>
+<blockquote>
+<p>To draw images in WebGL we need to use textures. Similarly to the way WebGL expects clipspace coordinates when rendering instead of pixels, WebGL expects texture coordinates when reading a texture. Texture coordinates go from 0.0 to 1.0 no matter the dimensions of the texture.</p>
+</blockquote>
+<p>我们需要使用纹理在 WebGL 中绘制图像。WebGL 在渲染时使用的是裁剪空间坐标，同样道理，它在读取纹理的时候使用的是纹理坐标。无论纹理尺寸多大，纹理坐标的范围都是从 0.0 到 1.0。</p>
+<blockquote>
+<p>Since we are only drawing a single rectangle (well, 2 triangles) we need to tell WebGL which place in the texture each point in the rectangle corresponds to. We’ll pass this information from the vertex shader to the fragment shader using a special kind of variable called a ‘varying’. It’s called a varying because it varies. WebGL will interpolate the values we provide in the vertex shader as it draws each pixel using the fragment shader.</p>
+</blockquote>
+<p>当我们在绘制一个矩形（恩，需要两个三角形来构成）的时候，我们需要将矩形上每个点对应的纹理位置信息提供给 WebGL。这时，需要使用一种特殊的变量来将这些信息从顶点着色器传递到片元着色器。这个特殊的变量就是 ‘varying’，它之所以这么命名就是因为它本身是变化的。当 WebGL 使用片元着色器来绘制像素时，它需要对顶点着色器提供的信息进行内插计算，从而得到正确的值来完成绘制。</p>
+<blockquote>
+<p>译者注：WebGL 会将顶点着色器和片元着色器中的同名 varying 变量建立一种“特殊”的连接，通过对顶点着色器中的 varying 变量进行内插计算得到结果，并提供给片元着色器中的同名 varying 变量。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>Using <a href="http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html" target="_blank" rel="external">the vertex shader from the end of the previous post</a> we need to add an attribute to pass in texture coordinates and then pass those on to the fragment shader.</p>
+</blockquote>
+<p>这里我们依然使用前面文章中提到的顶点着色器代码，但是我们需要额外添加一个 attribute 变量，用来将纹理坐标提供给片元着色器。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">attribute vec2 a_texCoord;</span><br><span class="line">...</span><br><span class="line">varying vec2 v_texCoord;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">   ...</span><br><span class="line">   <span class="comment">// 将纹理坐标传递给片元着色器</span></span><br><span class="line">   <span class="comment">// GPU 会在这些值之间做内插计算</span></span><br><span class="line">   v_texCoord = a_texCoord;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Then we supply a fragment shader to look up colors from the texture.</p>
+</blockquote>
+<p>然后，我们就可以使用下面的片元着色器代码，从纹理中查找指定位置的颜色了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;script id=<span class="string">"2d-fragment-shader"</span> type=<span class="string">"x-shader/x-fragment"</span>&gt;</span><br><span class="line">precision mediump float;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 我们的纹理</span></span><br><span class="line">uniform sampler2D u_image;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从顶点着色器传递过来的纹理坐标</span></span><br><span class="line">varying vec2 v_texCoord;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">   <span class="comment">// 在纹理中查找颜色值</span></span><br><span class="line">   gl_FragColor = texture2D(u_image, v_texCoord);</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Finally we need to load an image, create a texture and copy the image into the texture. Because we are in a browser images load asynchronously so we have to re-arrange our code a little to wait for the texture to load. Once it loads we’ll draw it.</p>
+</blockquote>
+<p>最后我们还需要加载图片、创建纹理，并把图片放入纹理中。因为浏览器中的图片是异步加载的，所以我们还需要对代码重新组织下。纹理加载完毕后我们就可以进行绘制了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> image = <span class="keyword">new</span> Image();</span><br><span class="line">  image.src = <span class="string">"http://someimage/on/our/server"</span>;  <span class="comment">// 必须要同域!!!</span></span><br><span class="line">  image.onload = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    render(image);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span><span class="params">(image)</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 省略了前文出现过的一些代码</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 获取 attribute 变量的存储位置</span></span><br><span class="line">  <span class="keyword">var</span> texCoordLocation = gl.getAttribLocation(program, <span class="string">"a_texCoord"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 为矩形提供纹理坐标</span></span><br><span class="line">  <span class="keyword">var</span> texCoordBuffer = gl.createBuffer();</span><br><span class="line">  gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);</span><br><span class="line">  gl.bufferData(gl.ARRAY_BUFFER, <span class="keyword">new</span> <span class="built_in">Float32Array</span>([</span><br><span class="line">      <span class="number">0.0</span>,  <span class="number">0.0</span>,</span><br><span class="line">      <span class="number">1.0</span>,  <span class="number">0.0</span>,</span><br><span class="line">      <span class="number">0.0</span>,  <span class="number">1.0</span>,</span><br><span class="line">      <span class="number">0.0</span>,  <span class="number">1.0</span>,</span><br><span class="line">      <span class="number">1.0</span>,  <span class="number">0.0</span>,</span><br><span class="line">      <span class="number">1.0</span>,  <span class="number">1.0</span>]), gl.STATIC_DRAW);</span><br><span class="line">  gl.enableVertexAttribArray(texCoordLocation);</span><br><span class="line">  gl.vertexAttribPointer(texCoordLocation, <span class="number">2</span>, gl.FLOAT, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 创建纹理</span></span><br><span class="line">  <span class="keyword">var</span> texture = gl.createTexture();</span><br><span class="line">  gl.bindTexture(gl.TEXTURE_2D, texture);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 设置一些参数从而让我们可以处理任何大小的图片</span></span><br><span class="line">  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);</span><br><span class="line">  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);</span><br><span class="line">  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);</span><br><span class="line">  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 将图片上传到纹理中</span></span><br><span class="line">  gl.texImage2D(gl.TEXTURE_2D, <span class="number">0</span>, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>And here’s the image rendered in WebGL.</p>
+</blockquote>
+<p>下面是一个 WebGL 渲染图片的例子：</p>
+<iframe class="webgl_example" style="width: 400px; height: 300px;" src="http://webglfundamentals.org/webgl/webgl-2d-image.html"></iframe>
+
+<p>你可以在<a href="http://webglfundamentals.org/webgl/webgl-2d-image.html" target="_blank" rel="external">新窗口</a>打开这个例子。</p>
+<blockquote>
+<p>Not too exciting so let’s manipulate that image. How about just swapping red and blue?</p>
+</blockquote>
+<p>是不是觉得上面的例子挺无聊的？好，那我们接下来做些处理，让事情变得有趣起来。你觉得我们将红色和蓝色交换下会发生什么事情？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">gl_FragColor = texture2D(u_image, v_texCoord).bgra;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>And now red and blue are swapped.</p>
+</blockquote>
+<p>现在红色和蓝色交换了，效果如下：</p>
+<iframe class="webgl_example" style="width: 400px; height: 300px;" src="http://webglfundamentals.org/webgl/webgl-2d-image-red2blue.html"></iframe>
+
+<p>你可以在<a href="http://webglfundamentals.org/webgl/webgl-2d-image-red2blue.html" target="_blank" rel="external">新窗口</a>打开这个例子。</p>
+<blockquote>
+<p>What if we want to do image processing that actually looks at other pixels? Since WebGL references textures in texture coordinates which go from 0.0 to 1.0 then we can calculate how much to move for 1 pixel with the simple math <code>onePixel = 1.0 / textureSize</code>.</p>
+</blockquote>
+<p>如果在图像处理的过程中需要参考其他像素该如何操作呢？因为 WebGL 处理纹理使用的是纹理坐标（范围[0.0,1.0]），所以我们可以通过计算来得到 WebGL 绘制一个像素所需要移动的距离，公式如下：</p>
+<figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">onePixel </span>=<span class="string"> 1.0 / textureSize</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Here’s a fragment shader that averages the left and right pixels of each pixel in the texture.</p>
+</blockquote>
+<p>在下面的例子中，片元着色器对纹理中的每个像素做了处理，通过对当前像素、左边相邻像素、右边相邻像素求平均来获取当前像素颜色值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;script id=<span class="string">"2d-fragment-shader"</span> type=<span class="string">"x-shader/x-fragment"</span>&gt;</span><br><span class="line">precision mediump float;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 纹理</span></span><br><span class="line">uniform sampler2D u_image;</span><br><span class="line">uniform vec2 u_textureSize;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从顶点着色器传递过来的纹理坐标</span></span><br><span class="line">varying vec2 v_texCoord;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">   <span class="comment">// 计算纹理坐标中的 1 像素</span></span><br><span class="line">   vec2 onePixel = vec2(<span class="number">1.0</span>, <span class="number">1.0</span>) / u_textureSize;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 对左、中、右三个像素求平均值</span></span><br><span class="line">   gl_FragColor = (</span><br><span class="line">       texture2D(u_image, v_texCoord) +</span><br><span class="line">       texture2D(u_image, v_texCoord + vec2(onePixel.x, <span class="number">0.0</span>)) +</span><br><span class="line">       texture2D(u_image, v_texCoord + vec2(-onePixel.x, <span class="number">0.0</span>))) / <span class="number">3.0</span>;</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>We then need to pass in the size of the texture from JavaScript.</p>
+</blockquote>
+<p>然后，我们需要通过 JavaScript 将纹理大小传递进去。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> textureSizeLocation = gl.getUniformLocation(program, <span class="string">"u_textureSize"</span>);</span><br><span class="line">...</span><br><span class="line"><span class="comment">// set the size of the image</span></span><br><span class="line">gl.uniform2f(textureSizeLocation, image.width, image.height);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Compare to the un-blurred image above.</p>
+</blockquote>
+<p>效果如下，可以同上面未进行模糊处理的图片对比下。</p>
+<iframe class="webgl_example" style="width: 400px; height: 300px;" src="http://webglfundamentals.org/webgl/webgl-2d-image-blend.html"></iframe>
+
+<p>你可以在<a href="http://webglfundamentals.org/webgl/webgl-2d-image-blend.html" target="_blank" rel="external">新窗口</a>打开这个例子。</p>
+<blockquote>
+<p>Now that we know how to reference other pixels let’s use a convolution kernel to do a bunch of common image processing. In this case we’ll use a 3x3 kernel. A convolution kernel is just a 3x3 matrix where each entry in the matrix represents how much to multiply the 8 pixels around the pixel we are rendering. We then divide the result by the weight of the kernel <a href="the sum of all values in the kernel">Here’s a pretty good article on it</a> or 1.0, whichever is greater. (<a href="http://docs.gimp.org/en/plug-in-convmatrix.html" target="_blank" rel="external">http://docs.gimp.org/en/plug-in-convmatrix.html</a>). And <a href="http://www.codeproject.com/KB/graphics/ImageConvolution.aspx" target="_blank" rel="external">here’s another article showing some actual code if you were to write this by hand in C++</a>.</p>
+</blockquote>
+<p>现在我们已经了解了如何获取其他像素信息，接下来我们将使用一个卷积核（convolution kernel）来做一些更通用的图像处理。在下面的例子中，我们将使用一个 3x3 的核。这里使用的卷积核是一个 3x3 的矩阵，里面的每一个元素的值将会与当前元素周围对应的 8 个像素值相乘。然后，我们将结果除以核的权重（核中所有值的总和）或 1.0。<a href="http://docs.gimp.org/en/plug-in-convmatrix.html" target="_blank" rel="external">这篇文章</a>很好的介绍了相关内容。<a href="http://www.codeproject.com/KB/graphics/ImageConvolution.aspx" target="_blank" rel="external">另一篇文章</a>介绍了一些具体的代码（C++ 写的）。</p>
+<blockquote>
+<p>In our case we’re going to do that work in the shader so here’s the new fragment shader.</p>
+</blockquote>
+<p>在例子中，我们准备在着色器中进行上面的操作。新的片元着色器代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;script id=<span class="string">"2d-fragment-shader"</span> type=<span class="string">"x-shader/x-fragment"</span>&gt;</span><br><span class="line">precision mediump float;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 纹理</span></span><br><span class="line">uniform sampler2D u_image;</span><br><span class="line">uniform vec2 u_textureSize;</span><br><span class="line">uniform float u_kernel[<span class="number">9</span>];</span><br><span class="line">uniform float u_kernelWeight;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 顶点着色器传递来的纹理坐标信息</span></span><br><span class="line">varying vec2 v_texCoord;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">   vec2 onePixel = vec2(<span class="number">1.0</span>, <span class="number">1.0</span>) / u_textureSize;</span><br><span class="line">   vec4 colorSum =</span><br><span class="line">     texture2D(u_image, v_texCoord + onePixel * vec2(-<span class="number">1</span>, -<span class="number">1</span>)) * u_kernel[<span class="number">0</span>] +</span><br><span class="line">     texture2D(u_image, v_texCoord + onePixel * vec2( <span class="number">0</span>, -<span class="number">1</span>)) * u_kernel[<span class="number">1</span>] +</span><br><span class="line">     texture2D(u_image, v_texCoord + onePixel * vec2( <span class="number">1</span>, -<span class="number">1</span>)) * u_kernel[<span class="number">2</span>] +</span><br><span class="line">     texture2D(u_image, v_texCoord + onePixel * vec2(-<span class="number">1</span>,  <span class="number">0</span>)) * u_kernel[<span class="number">3</span>] +</span><br><span class="line">     texture2D(u_image, v_texCoord + onePixel * vec2( <span class="number">0</span>,  <span class="number">0</span>)) * u_kernel[<span class="number">4</span>] +</span><br><span class="line">     texture2D(u_image, v_texCoord + onePixel * vec2( <span class="number">1</span>,  <span class="number">0</span>)) * u_kernel[<span class="number">5</span>] +</span><br><span class="line">     texture2D(u_image, v_texCoord + onePixel * vec2(-<span class="number">1</span>,  <span class="number">1</span>)) * u_kernel[<span class="number">6</span>] +</span><br><span class="line">     texture2D(u_image, v_texCoord + onePixel * vec2( <span class="number">0</span>,  <span class="number">1</span>)) * u_kernel[<span class="number">7</span>] +</span><br><span class="line">     texture2D(u_image, v_texCoord + onePixel * vec2( <span class="number">1</span>,  <span class="number">1</span>)) * u_kernel[<span class="number">8</span>] ;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 将总和除以权重，但是只处理 rgb 值</span></span><br><span class="line">   <span class="comment">// 将 alpha 设置为 1.0</span></span><br><span class="line">   gl_FragColor = vec4((colorSum / u_kernelWeight).rgb, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>In JavaScript we need to supply a convolution kernel and its weight</p>
+</blockquote>
+<p>在 JavaScript 中，我们需要提供卷积核和它的权重。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">computeKernelWeight</span><span class="params">(kernel)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> weight = kernel.reduce(<span class="function"><span class="keyword">function</span><span class="params">(prev, curr)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> prev + curr;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> weight &lt;= <span class="number">0</span> ? <span class="number">1</span> : weight;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="keyword">var</span> kernelLocation = gl.getUniformLocation(program, <span class="string">"u_kernel[0]"</span>);</span><br><span class="line"><span class="keyword">var</span> kernelWeightLocation = gl.getUniformLocation(program, <span class="string">"u_kernelWeight"</span>);</span><br><span class="line">...</span><br><span class="line"><span class="keyword">var</span> edgeDetectKernel = [</span><br><span class="line">    -<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>,</span><br><span class="line">    -<span class="number">1</span>,  <span class="number">8</span>, -<span class="number">1</span>,</span><br><span class="line">    -<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span></span><br><span class="line">];</span><br><span class="line">gl.uniform1fv(kernelLocation, edgeDetectKernel);</span><br><span class="line">gl.uniform1f(kernelWeightLocation, computeKernelWeight(edgeDetectKernel));</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>And voila… Use the drop down list to select different kernels.</p>
+</blockquote>
+<p>好，大功告成！示例如下，可以在下拉菜单中选择不同的核来试试效果。</p>
+<iframe class="webgl_example" style="width: 400px; height: 300px;" src="http://webglfundamentals.org/webgl/webgl-2d-image-3x3-convolution.html"></iframe>
+
+<p>你可以在<a href="http://webglfundamentals.org/webgl/webgl-2d-image-3x3-convolution.html" target="_blank" rel="external">新窗口</a>打开这个例子。</p>
+<blockquote>
+<p>I hope this article has convinced you image processing in WebGL is pretty simple. Next up I’ll go over  <a href="http://webglfundamentals.org/webgl/lessons/webgl-image-processing-continued.html" target="_blank" rel="external">how to apply more than one effect to the image</a>.</p>
+</blockquote>
+<p>我希望通过这篇文章可以让你明白：在 WebGL 中处理图像非常简单。下一章我将介绍<a href="http://webglfundamentals.org/webgl/lessons/webgl-image-processing-continued.html" target="_blank" rel="external">如何在图片上应用多种效果</a>。</p>
+<hr>
+<h2 id="你问我答环节">你问我答环节</h2><blockquote>
+<h3 id="‘u_image’_is_never_set-_How_does_that_work?">‘u_image’ is never set. How does that work?</h3></blockquote>
+<h3 id="1-_u_image_一直没赋值，那它是如何工作的呢？">1. <code>u_image</code> 一直没赋值，那它是如何工作的呢？</h3><blockquote>
+<p>Uniforms default to 0 so u_image defaults to using texture unit 0. Texture unit 0 is also the default active texture so calling bindTexture will bind the texture to texture unit 0.</p>
+</blockquote>
+<p>uniform 变量默认值为 0，所以与之类似，u_image 默认使用索引值为 0 的纹理单元。它同时也是默认激活的纹理，因此当调用 bindTexture 时，会把纹理绑定到该纹理单元。</p>
+<blockquote>
+<p>WebGL has an array of texture units. Which texture unit each sampler uniform references is set by looking up the location of that sampler uniform and then setting the index of the texture unit you want it to reference.</p>
+</blockquote>
+<p>WebGL 有一组纹理单元。需要通过查找 uniform 变量位置、设置纹理单元索引值的操作来将纹理传递给着色器中的取样器变量。</p>
+<blockquote>
+<p>For example:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> textureUnitIndex = <span class="number">6</span>; <span class="comment">// 使用 6 号纹理单元</span></span><br><span class="line"><span class="keyword">var</span> u_imageLoc = gl.getUniformLocation(</span><br><span class="line">    program, <span class="string">"u_image"</span>);</span><br><span class="line">gl.uniform1i(u_imageLoc, textureUnitIndex);</span><br></pre></td></tr></table></figure></p>
+<p>To set textures on different units you call gl.activeTexture and then bind the texture you want on that unit. Example</p>
+</blockquote>
+<p>如果要在不同单元上设置纹理，需要调用 gl.activeTexture ，然后再将纹理绑定到你期望的单元上。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将 someTexture 绑定到 6 号纹理单元</span></span><br><span class="line">gl.activeTexture(gl.TEXTURE6);</span><br><span class="line">gl.bindTexture(gl.TEXTURE_2D, someTexture);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>This works too</p>
+</blockquote>
+<p>下面的代码有同样的效果：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> textureUnitIndex = <span class="number">6</span>; <span class="comment">// 使用 6 号纹理单元</span></span><br><span class="line"><span class="comment">// 将 someTexture 绑定到 6 号纹理单元</span></span><br><span class="line">gl.activeTexture(gl.TEXTURE0 + textureUnitIndex);</span><br><span class="line">gl.bindTexture(gl.TEXTURE_2D, someTexture);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<h3 id="What’s_with_the_a,_u,_and_v__prefixes_in_from_of_variables_in_GLSL?">What’s with the a<em>, u</em>, and v_ prefixes in from of variables in GLSL?</h3></blockquote>
+<h3 id="2-_为什么_GLSL_中的变量都要添加形如_a_、u__和_v__的前缀呢？">2. 为什么 GLSL 中的变量都要添加形如 <code>a_</code>、<code>u_</code> 和 <code>v_</code> 的前缀呢？</h3><blockquote>
+<p>That’s just a naming convention. They are not required but for me it makes it easier to see at a glance<br>where the values are coming from. a<em> for attributes which is the data provided by buffers. u</em> for uniforms which are inputs to the shaders, v_ for varyings which are values passed from a vertex shader to a fragment shader and interpolated (or varied) between the vertices for each pixel drawn.<br>See <a href="webgl-how-it-works.html">How it works</a> for more details.</p>
+</blockquote>
+<p>这只是一种命名的规范而已。它不是强制性的规定，但是这么做可以让我们轻松识别该变量的来源。例如，<code>a_</code> 前缀的是 attribute 变量，由缓存对象提供变量值。<code>u_</code> 前缀的是 uniform 变量，包含了着色器的输入信息。<code>v_</code> 前缀的是 varying 变量，表示该变量值从顶点着色器传递给片元着色器，并在像素的绘制中需要进行内插运算。</p>
+<p>可以在<a href="http://reygreen1.github.io/2015/10/25/webgl-how-it-works/" target="_blank" rel="external">WebGL 工作机制</a>中查看详细介绍。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/webgl/">webgl</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/webgl/">webgl</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/11/13/webgl-image-processing/" data-title="[译]WebGL 基础系列：图像处理" data-url="http://reygreen1.github.io/2015/11/13/webgl-image-processing/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"curry2015"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+	<!-- 多说公共JS代码 end -->
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">guorui</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+  
+   |
+  Modified by <a href="/">guorui</a>
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="http://s7.qhimg.com/lib/jquery/1102.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'curry2015' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

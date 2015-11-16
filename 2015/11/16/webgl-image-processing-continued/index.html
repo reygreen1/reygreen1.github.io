@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>[译]WebGL 基础系列：图像处理（续） | Rey&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="guorui">
+  
+  
+    <meta name="description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-image-processing-continued.html
+
+
+This article is a continuation of WebGL Image Processing. If you haven’t read that I suggest you start there.
+
+本">
+  
+  <meta name="description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-image-processing-continued.html
+
+
+This article is a continuation of WebGL Image Processing. If you haven’t read that I suggest you start there.
+
+本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译]WebGL 基础系列：图像处理（续）">
+<meta property="og:url" content="http://reygreen1.github.io/2015/11/16/webgl-image-processing-continued/index.html">
+<meta property="og:site_name" content="Rey's Blog">
+<meta property="og:description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-image-processing-continued.html
+
+
+This article is a continuation of WebGL Image Processing. If you haven’t read that I suggest you start there.
+
+本">
+<meta property="og:image" content="http://7tt058.com1.z0.glb.clouddn.com/El%20Capitan.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译]WebGL 基础系列：图像处理（续）">
+<meta name="twitter:description" content="原文地址：http://webglfundamentals.org/webgl/lessons/webgl-image-processing-continued.html
+
+
+This article is a continuation of WebGL Image Processing. If you haven’t read that I suggest you start there.
+
+本">
+  
+    <link rel="alternate" href="/atom.xml" title="Rey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" type="image/x-icon" href="http://s0.qhimg.com/static/79ec3f5e5536f764/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Rey&#39;s Blog</a></h1>
+    <p><a href="/">&lt;!-- A site to show something about myself --&gt;</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/11/16/webgl-image-processing-continued/">
+  <time datetime="2015-11-15T16:00:00.000Z">
+    2015-11-16
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">[译]WebGL 基础系列：图像处理（续）</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>原文地址：<a href="http://webglfundamentals.org/webgl/lessons/webgl-image-processing-continued.html" target="_blank" rel="external">http://webglfundamentals.org/webgl/lessons/webgl-image-processing-continued.html</a></p>
+<p><img src="http://7tt058.com1.z0.glb.clouddn.com/El%20Capitan.jpg" alt="El Capitan"></p>
+<blockquote>
+<p>This article is a continuation of <a href="http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html" target="_blank" rel="external">WebGL Image Processing</a>. If you haven’t read that I suggest <a href="http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html" target="_blank" rel="external">you start there</a>.</p>
+</blockquote>
+<p>本文接上一篇<a href="http://reygreen1.github.io/2015/11/13/webgl-image-processing/" target="_blank" rel="external">WebGL 图像处理</a>的内容继续讨论。如果你还没有读过，那么我建议你先去了解下上一篇的内容。</p>
+<blockquote>
+<p>The next most obvious question for image processing is how to apply multiple effects?</p>
+</blockquote>
+<p>对于图像处理而言，另一个比较重要的问题是：如何同时添加多种处理效果？</p>
+<a id="more"></a>
+<blockquote>
+<p>Well, you could try to generate shaders on the fly. Provide a UI that lets the user select the effects he wants to use then generate a shader that does all of the effects. That might not always be possible though that technique is often used to <a href="http://www.youtube.com/watch?v=cQUn0Zeh-0Q" target="_blank" rel="external">create effects for real time graphics</a>.</p>
+</blockquote>
+<p>当然，你可能会想要动态的来创建着色器。首先提供一个 UI 界面，让用户自己选择想要的效果，然后生成一个包含全部效果的着色器。这个技术不常用，但是在<a href="http://www.youtube.com/watch?v=cQUn0Zeh-0Q" target="_blank" rel="external">为实时图像创建效果</a>的时候经常使用。</p>
+<blockquote>
+<p>译者注：on the fly，这里应该是即时的、所见即所得的意思。我这里翻译成动态的，表示一边操作一边看到相应的着色器。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>A more flexible way is to use 2 more textures and render to each texture in turn, ping ponging back and forth and applying the next effect each time.</p>
+</blockquote>
+<p>这里有一种更加灵活的解决方案：使用多个纹理，然后在这几个纹理间进行多次处理后结果的存储，操作方式就像打乒乓球一样，来来回回，每次处理一个特殊效果。操作过程如下：</p>
+<blockquote><br><pre>Original Image -&gt; [Blur]        -&gt; Texture 1<br>Texture 1      -&gt; [Sharpen]     -&gt; Texture 2<br>Texture 2      -&gt; [Edge Detect] -&gt; Texture 1<br>Texture 1      -&gt; [Blur]        -&gt; Texture 2<br>Texture 2      -&gt; [Normal]      -&gt; Canvas</pre><br></blockquote>
+
+<blockquote>
+<p>To do this we need to create framebuffers. In WebGL and OpenGL, a Framebuffer is actually a poor name. A WebGL/OpenGL Framebuffer is really just a collection of state and not actually a buffer of any kind. But, by attaching a texture to a framebuffer we can render into that texture. </p>
+</blockquote>
+<p>为了达到这样的目的，我们需要创建帧缓冲区（framebuffer）。在 WebGL 和 OpenGL 中，帧缓冲区是一个很“奇葩”的命名，它实际上只是一个状态集合，而并不是一个特定类型的缓冲区。但是，当你给它绑定一个纹理的时候，这个纹理就会被渲染出来。</p>
+<blockquote>
+<p>First let’s turn <a href="webgl-image-processing.html">the old texture creation code</a> into a function</p>
+</blockquote>
+<p>首先，让我们把<a href="http://reygreen1.github.io/2015/11/13/webgl-image-processing/" target="_blank" rel="external">旧的创建纹理的代码</a>封装到一个函数里：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createAndSetupTexture</span><span class="params">(gl)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> texture = gl.createTexture();</span><br><span class="line">  gl.bindTexture(gl.TEXTURE_2D, texture);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 设置纹理参数，从而让我们可以渲染任何大小的图片，注意这些操作都是针对像素级的操作。</span></span><br><span class="line">  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);</span><br><span class="line">  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);</span><br><span class="line">  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);</span><br><span class="line">  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> texture;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建纹理并把图片放入纹理中</span></span><br><span class="line"><span class="keyword">var</span> originalImageTexture = createAndSetupTexture(gl);</span><br><span class="line">gl.texImage2D(gl.TEXTURE_2D, <span class="number">0</span>, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>And now let’s use that function to make 2 more textures and attach them to 2 framebuffers.</p>
+</blockquote>
+<p>那么现在我们就可以使用这个函数了。我们使用它来创建 2 个纹理并将它们同 2 个帧缓冲区联系起来。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建 2 个纹理并把它们同帧缓冲区联系起来</span></span><br><span class="line"><span class="keyword">var</span> textures = [];</span><br><span class="line"><span class="keyword">var</span> framebuffers = [];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> ii = <span class="number">0</span>; ii &lt; <span class="number">2</span>; ++ii) &#123;</span><br><span class="line">  <span class="keyword">var</span> texture = createAndSetupTexture(gl);</span><br><span class="line">  textures.push(texture);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 把纹理设置成图片的大小</span></span><br><span class="line">  gl.texImage2D(</span><br><span class="line">      gl.TEXTURE_2D, <span class="number">0</span>, gl.RGBA, image.width, image.height, <span class="number">0</span>,</span><br><span class="line">      gl.RGBA, gl.UNSIGNED_BYTE, <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 创建一个帧缓冲区</span></span><br><span class="line">  <span class="keyword">var</span> fbo = gl.createFramebuffer();</span><br><span class="line">  framebuffers.push(fbo);</span><br><span class="line">  gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 把纹理同帧缓冲区联系起来</span></span><br><span class="line">  gl.framebufferTexture2D(</span><br><span class="line">      gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Now let’s make a set of kernels and then a list of them to apply.</p>
+</blockquote>
+<p>现在，我们来创建一组核和一个需要用到的效果列表。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一些卷积核</span></span><br><span class="line"><span class="keyword">var</span> kernels = &#123;</span><br><span class="line">  normal: [</span><br><span class="line">    <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>,</span><br><span class="line">    <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>,</span><br><span class="line">    <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">  ],</span><br><span class="line">  gaussianBlur: [</span><br><span class="line">    <span class="number">0.045</span>, <span class="number">0.122</span>, <span class="number">0.045</span>,</span><br><span class="line">    <span class="number">0.122</span>, <span class="number">0.332</span>, <span class="number">0.122</span>,</span><br><span class="line">    <span class="number">0.045</span>, <span class="number">0.122</span>, <span class="number">0.045</span></span><br><span class="line">  ],</span><br><span class="line">  unsharpen: [</span><br><span class="line">    -<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>,</span><br><span class="line">    -<span class="number">1</span>,  <span class="number">9</span>, -<span class="number">1</span>,</span><br><span class="line">    -<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span></span><br><span class="line">  ],</span><br><span class="line">  emboss: [</span><br><span class="line">     -<span class="number">2</span>, -<span class="number">1</span>,  <span class="number">0</span>,</span><br><span class="line">     -<span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>,</span><br><span class="line">      <span class="number">0</span>,  <span class="number">1</span>,  <span class="number">2</span></span><br><span class="line">  ]</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 执行的效果列表</span></span><br><span class="line"><span class="keyword">var</span> effectsToApply = [</span><br><span class="line">  <span class="string">"gaussianBlur"</span>,</span><br><span class="line">  <span class="string">"emboss"</span>,</span><br><span class="line">  <span class="string">"gaussianBlur"</span>,</span><br><span class="line">  <span class="string">"unsharpen"</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>And finally let’s apply each one, ping ponging which texture we are rendering too</p>
+</blockquote>
+<p>最后，我们会把这些效果全部应用起来。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 从原图开始</span></span><br><span class="line">gl.bindTexture(gl.TEXTURE_2D, originalImageTexture);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 绘制纹理的时候不需要对图片进行y轴翻转</span></span><br><span class="line">gl.uniform1f(flipYLocation, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历我们想使用的效果</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> ii = <span class="number">0</span>; ii &lt; effectsToApply.length; ++ii) &#123;</span><br><span class="line">  <span class="comment">// 设置要绘制到的帧缓冲区</span></span><br><span class="line">  setFramebuffer(framebuffers[ii % <span class="number">2</span>], image.width, image.height);</span><br><span class="line"></span><br><span class="line">  drawWithKernel(effectsToApply[ii]);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 下一次绘制时，使用刚刚渲染的纹理</span></span><br><span class="line">  gl.bindTexture(gl.TEXTURE_2D, textures[ii % <span class="number">2</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 最后将结果绘制到 canvas 上</span></span><br><span class="line">gl.uniform1f(flipYLocation, -<span class="number">1</span>);  <span class="comment">// 需要为 canvas 做y轴翻转</span></span><br><span class="line">setFramebuffer(<span class="literal">null</span>, canvas.width, canvas.height);</span><br><span class="line">drawWithKernel(<span class="string">"normal"</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setFramebuffer</span><span class="params">(fbo, width, height)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 设置要渲染的帧缓冲区</span></span><br><span class="line">  gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 告诉着色器帧缓冲区的分辨率</span></span><br><span class="line">  gl.uniform2f(resolutionLocation, width, height);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 设置视图大小</span></span><br><span class="line">  gl.viewport(<span class="number">0</span>, <span class="number">0</span>, width, height);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">drawWithKernel</span><span class="params">(name)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 设置核</span></span><br><span class="line">  gl.uniform1fv(kernelLocation, kernels[name]);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 绘制矩形</span></span><br><span class="line">  gl.drawArrays(gl.TRIANGLES, <span class="number">0</span>, <span class="number">6</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Here’s a working version with a slightly more flexible UI. Check the effects to turn them on. Drag the effects to reorder how they are applied.</p>
+</blockquote>
+<p>下面是一个可运行的例子，你可以看下它最终的显示效果，也可以改变各个效果的执行顺序。</p>
+<iframe class="webgl_example" style="width: 400px; height: 340px;" src="http://webglfundamentals.org/webgl/webgl-2d-image-processing.html"></iframe>
+
+<p>你可以在<a href="http://webglfundamentals.org/webgl/webgl-2d-image-processing.html" target="_blank" rel="external">新窗口</a>打开这个实例。</p>
+<blockquote>
+<p>Some things I should go over.  </p>
+</blockquote>
+<p>我们来回顾下上面的代码。</p>
+<p>Calling <code>gl.bindFramebuffer</code> with <code>null</code> tells WebGL you want to render to the canvas instead of to one of your framebuffers.</p>
+<p>调用 <code>gl.bindFramebuffer</code> 时，如果使用 <code>null</code> 作为参数，这实际上是告诉 WebGL 你想要渲染到 canvas 而不是帧缓冲区中。</p>
+<blockquote>
+<p>WebGL has to convert from <a href="http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html" target="_blank" rel="external">clipspace</a> back into pixels. It does this based on the settings of <code>gl.viewport</code>. The settings of <code>gl.viewport</code> default to the size of the canvas when we initialize WebGL. Since the framebuffers we are rendering into are a different size than the canvas we need to set the viewport appropriately.</p>
+</blockquote>
+<p>WebGL 需要将<a href="http://reygreen1.github.io/2015/10/24/webgl-fundamentals/" target="_blank" rel="external">剪切空间</a>转换为像素。这种转换依赖 <code>gl.viewport</code> 的设置。默认情况下，可以设置为初始化 WebGL 时 canvas 的大小。但是帧缓冲区的大小并不一致，因此我们需要合理设置下 viewport。</p>
+<p>Finally in the <a href="http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html" target="_blank" rel="external">original example</a> we flipped the Y coordinate when rendering because WebGL displays the canvas with 0,0 being the bottom left corner instead of the more traditional for 2D top left. That’s not needed when rendering to a framebuffer. Because the framebuffer is never displayed, which part is top and bottom is irrelevant. All that matters is that pixel 0,0 in the framebuffer corresponds to 0,0 in our calculations. To deal with this I made it possible to set whether to flip or not by adding one more input into the shader.</p>
+<p>最后要说的是，在<a href="http://reygreen1.github.io/2015/10/24/webgl-fundamentals/" target="_blank" rel="external">最开始的例子</a>中，在渲染的时候需要翻转下 y 轴坐标，这是因为 WebGL 纹理坐标系统把左下角作为坐标原点，而不是像图片坐标系统那样把左上角作为坐标原点。但是在渲染到帧缓冲区时，不需要这么做。这是因为，帧缓冲区从来都不会被显示出来，哪个地方是坐标原点其实是无关紧要的。有关系的地方在于，帧缓冲区里的坐标原点的像素需要匹配到我们计算出的原点。为了解决这个问题，可以通过多添加一个输入参数来决定是否需要进行翻转操作。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;script id=<span class="string">"2d-vertex-shader"</span> type=<span class="string">"x-shader/x-vertex"</span>&gt;</span><br><span class="line">...</span><br><span class="line">uniform float u_flipY;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">   ...</span><br><span class="line">   gl_Position = vec4(clipSpace * vec2(<span class="number">1</span>, u_flipY), <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">   ...</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>And then we can set it when we render with</p>
+</blockquote>
+<p>然后我们就可以通过设置它来达到目的了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> flipYLocation = gl.getUniformLocation(program, <span class="string">"u_flipY"</span>);</span><br><span class="line">...</span><br><span class="line"><span class="comment">// 不翻转</span></span><br><span class="line">gl.uniform1f(flipYLocation, <span class="number">1</span>);</span><br><span class="line">...</span><br><span class="line"><span class="comment">// 翻转</span></span><br><span class="line">gl.uniform1f(flipYLocation, -<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>I kept this example simple by using a single GLSL program that can achieve multiple effects. If you wanted to do full on image processing you’d probably need many GLSL programs. A program for hue, saturation and luminance adjustment. Another for brightness and contrast. One for inverting, another for adjusting levels, etc. You’d need to change the code to switch GLSL programs and update the parameters for that particular program. I’d considered writing that example but it’s an exercise best left to the reader because multiple GLSL programs each with their own parameter needs probably means some major refactoring to keep it all from becoming a big mess of spaghetti. </p>
+</blockquote>
+<p>为了让实例看起来比较简单，我在这里只使用了一个 GLSL 程序来达到使用多种效果的目的。如果你要进行更全面的图像处理，那么可能需要多个 GLSL 程序。例如，一个程序用来控制色调、饱和度和控制亮度，另一个用来控制亮度和对比度。或者，一个程序用来控制反相，另一个用来调整程度。你需要修改代码来切换 GLSL 程序并为制定的程序更新相应参数。我原来也想要写个这样的例子，但是后来认为这是一个很好的练习题，所以留给读者自己来完成了。需要注意，多个程序意味着需要进行重构从而避免让代码成为一堆杂乱无章的代码。</p>
+<blockquote>
+<p>I hope this and the preceding examples have made WebGL seem a little more approachable and I hope starting with 2D helps make WebGL a little easier to understand. If I find the time I’ll try to write <a href="webgl-2d-translation.html">a few more articles</a> about how to do 3D as well as more details on what WebGL is really doing under the hood.<br>For a next step consider learning <a href="http://webglfundamentals.org/webgl/lessons/webgl-2-textures.html" target="_blank" rel="external">how to use 2 or more textures</a>.</p>
+</blockquote>
+<p>我希望上面的这些例子能让 WebGL 看起来更加“平易近人”。我认为以 2D 操作作为开始能让 WebGL 更容易理解。如果有时间的话，我也会写一些文章来讨论 3D 以及 WebGL 内部执行的细节。接下来可以考虑去学习下<br><a href="http://webglfundamentals.org/webgl/lessons/webgl-2-textures.html" target="_blank" rel="external">如何使用多个纹理</a>。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+  <div class="categories">
+    <a class="categories-link" href="/categories/webgl/">webgl</a>
+  </div>
+
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/webgl/">webgl</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/11/16/webgl-image-processing-continued/" data-title="[译]WebGL 基础系列：图像处理（续）" data-url="http://reygreen1.github.io/2015/11/16/webgl-image-processing-continued/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"curry2015"};
+		(function() {
+			var ds = document.createElement('script');
+			ds.type = 'text/javascript';ds.async = true;
+			ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+			ds.charset = 'UTF-8';
+			(document.getElementsByTagName('head')[0] 
+			 || document.getElementsByTagName('body')[0]).appendChild(ds);
+		})();
+		</script>
+	<!-- 多说公共JS代码 end -->
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">guorui</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+  
+   |
+  Modified by <a href="/">guorui</a>
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="http://s7.qhimg.com/lib/jquery/1102.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'curry2015' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

@@ -13,12 +13,13 @@ html {
   background: #6c7989 -ms-linear-gradient(#6c7989, #434b55) fixed;
   background: #6c7989 linear-gradient(#6c7989, #434b55) fixed;
   background-image: url("http://7tt058.com1.z0.glb.clouddn.com/bg.jpg");
+  font-size: 62.5%;
 }
 body {
   padding: 50px 0;
   margin: 0;
-  font: 1em/1.7 "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
-  color: #2f2f2f;
+  font: 1.6em/2 Lantinghei SC, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
+  color: #222;
   font-weight: 400;
 }
 .wrapper {
@@ -278,12 +279,11 @@ article header time {
   line-height: 1;
 }
 article header .title {
-  font-size: 1.8em;
+  font-size: 2em;
   font-weight: 400;
-  line-height: 1.4;
-  margin: 0;
-  padding: 0;
-  text-shadow: rgba(255,255,255,0.9) 0 1px 0;
+  line-height: 1.35;
+  margin: 1.2em 0 0.6em;
+  text-shadow: rgba(64,64,64,0.9) 0 1px 0;
 }
 article header .title a {
   color: #222;
@@ -300,37 +300,54 @@ article .entry h3,
 article .entry h4,
 article .entry h5,
 article .entry h6 {
-  padding: 0;
-  font-weight: 400;
-}
-article .entry h1,
-article .entry h2,
-article .entry h3,
-article .entry h4 {
-  margin: 1em 0;
+  font-family: Verdana, 'Helvetica Neue', 'Microsoft Yahei', 'Hiragino Sans GB', 'Microsoft Sans Serif', 'WenQuanYi Micro Hei', sans-serif;
+  color: #000;
+  margin: 1.2em 0 0.6em;
+  line-height: 1.35;
+  font-weight: 100;
 }
 article .entry h1 {
-  font-size: 1.75em;
+  font-size: 2em;
+}
+article .entry h2 {
+  font-size: 1.8em;
+}
+article .entry h3 {
+  font-size: 1.6em;
+}
+article .entry h4 {
+  font-size: 1.4em;
+}
+article .entry h5,
+article .entry h6 {
+  font-size: 1.3em;
 }
 article .entry p,
 article .entry ul,
 article .entry ol,
 article .entry table,
 article .entry dl {
-  margin: 1.6em 0;
+  margin: 0 0 1.2em;
 }
 article .entry p {
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+article .entry p:last-child {
+  margin-bottom: 0;
 }
 article .entry em {
   font-weight: 700;
   font-style: normal;
 }
 article .entry blockquote {
-  margin: 0 -30px 20px;
-  padding: 15px 20px 1px 40px;
-  font-style: italic;
+  position: relative;
+  margin: 1em 0 1em;
+  padding: 1em;
+  font-family: Lantinghei SC, 'Helvetica Neue', 'Microsoft Yahei', 'Hiragino Sans GB', 'Microsoft Sans Serif', 'WenQuanYi Micro Hei', sans-serif;
+  border: 1px dashed #333;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
   background: #ccc;
   background: rgba(0,0,0,0.06);
   color: #222;
@@ -386,7 +403,7 @@ article .entry pre {
   padding: 10px 30px;
   background: #3a3c42;
   color: #f8f8f2;
-  margin: 0 -30px 16px;
+  margin: 0 0 16px;
 }
 @media screen and (max-width: 580px) {
   article .entry pre {
